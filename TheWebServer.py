@@ -8,6 +8,7 @@
 from flask import Flask, render_template
 import datetime
 import Max6675K
+import DHT11
 
 app = Flask(__name__)
 
@@ -26,7 +27,9 @@ def getTemperature():
     timeString = now.strftime("%Y-%m-%d %H:%M")
     #timeString = Max6675K.hello()
     temp = Max6675K.getTemp()
-    humidity = 0
+    humidity = DHT11.get_humidity(11, 17)
+    
+    
     
     templateData = {
       'title' : 'Temperature: ',

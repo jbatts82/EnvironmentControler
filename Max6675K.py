@@ -38,9 +38,6 @@ def getTemp():
         print("F  : ", F)
     return str(F)
     
-
-
-
 def hello():
     return "hellhhho"
 
