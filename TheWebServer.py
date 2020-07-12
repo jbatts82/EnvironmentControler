@@ -9,6 +9,7 @@ from flask import Flask, render_template
 import datetime
 import Max6675K
 import DHT11
+import Songle
 
 app = Flask(__name__)
 
@@ -19,9 +20,16 @@ def hello():
 @app.route('/cakes')
 def cakes():
     return 'Yummy cakes!'
-    
+
+@app.route('/relay1on')
+def relay1on():
+    print("relay1on")
+    Songle.relay1_on()
+    return render_template('index.html')
+
 @app.route('/')
 def getTemperature():
+
     Max6675K.init_tempSensor(0,0)
     now = datetime.datetime.now()
     timeString = now.strftime("%Y-%m-%d %H:%M")
@@ -30,13 +38,13 @@ def getTemperature():
     humidity = DHT11.get_humidity(11, 17)
     
     
-    
     templateData = {
       'title' : 'Temperature: ',
       'time': timeString,
       'temp' : temp,
       'hum' : humidity
       }
+      
     return render_template('index.html', **templateData)
 
 if __name__ == '__main__':
