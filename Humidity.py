@@ -7,6 +7,7 @@
 temperature_c_list = []
 temperature_c_file = 'temperature_log.txt'
 
+
 def get_humidity_from_file():
     # open file and put into list
     global temperature_c_list, temperature_c_file
