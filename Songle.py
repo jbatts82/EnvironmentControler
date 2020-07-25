@@ -13,10 +13,6 @@ global relay1, relay2
 relay1 = LED(14)
 relay2 = LED(18)
 
-
-
-
-
 def relay1_on():
     relay1.on()
     
