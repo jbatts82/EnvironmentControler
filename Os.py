@@ -5,20 +5,19 @@
 
 import schedule
 import time
-import Songle
+import Humidity
 
+def Task_10s():
+    Humidity.process_humidity()
 
-def read_temp():
-    print("reading temp")
+def Task_60s():
+    Humidity.save_humidity_to_file()
     
-def read_humidity():
-    print("reading hum")
-    
-schedule.every(10).seconds.do(read_temp)
-schedule.every(25).seconds.do(read_humidity)
 
-Songle.init_relay()
-Songle.relay1_on()
+schedule.every(10).seconds.do(Task_10s)
+schedule.every(60).seconds.do(Task_60s)
+
+Humidity.init_humidity()
 
 
 try:
@@ -26,6 +25,6 @@ try:
         schedule.run_pending()
         time.sleep(1)
 except KeyboardInterrupt:
-    GPIO.cleanup()
+    print("quitting")
 
 

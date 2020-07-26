@@ -15,7 +15,7 @@ def init_relay():
     global relay1, relay2
     relay1.off()
     relay2.off()
-
+    
 def relay1_on():
     global relay1
     relay1.on()
@@ -32,6 +32,3 @@ def relay2_off():
     global relay2
     relay2.off()
     
-    
-
-relay1_on()
