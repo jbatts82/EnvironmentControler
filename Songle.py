@@ -16,6 +16,12 @@ def init_relay():
     relay1.off()
     relay2.off()
     
+def shut_down():
+    global relay1, relay2
+    print("Opening Relays")
+    relay1.off()
+    relay2.off()
+
 def relay1_on():
     global relay1
     relay1.on()

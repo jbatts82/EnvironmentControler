@@ -9,14 +9,20 @@ import File_Handler
 
 humidity_list = []
 humidity_file = 'humidity_log.txt'
+current_humidity_per = 0
 
 def init_humidity():
     get_humidity_from_file()
 
 def process_humidity():
-    humidity = DHT11.get_humidity_percent()
-    add_humidity_data_to_list(humidity)
-    print("The Humidity is: ", humidity)
+    global current_humidity_per
+    current_humidity_per = DHT11.get_humidity_percent()
+    add_humidity_data_to_list(current_humidity_per)
+    print("The Humidity is: ", current_humidity_per)
+
+def get_humidity():
+    global current_humidity_per
+    return current_humidity_per
 
 def get_humidity_from_file():
     # open file and put into list
