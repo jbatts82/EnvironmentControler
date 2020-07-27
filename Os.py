@@ -1,6 +1,5 @@
 ###############################################################################
 # File Name  : Os.py
-# Author     : John
 # Date       : 07/25/2020
 # Description: Main controller of system
 ###############################################################################
@@ -28,9 +27,9 @@ def Task_60s():
     Heater.process_heater()
     time.sleep(1)
 
-schedule.every(3).seconds.do(Task_10s)
-schedule.every(6).seconds.do(Task_30s)
-schedule.every(9).seconds.do(Task_60s)
+schedule.every(10).seconds.do(Task_10s)
+schedule.every(30).seconds.do(Task_30s)
+schedule.every(60).seconds.do(Task_60s)
 
 Humidity.init_humidity()
 Temperature.init_temperature()
