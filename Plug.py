@@ -6,54 +6,42 @@
 
 import asyncio
 from kasa import SmartPlug
-from kasa import Discover
-from pprint import pformat as pf
 
 plug1_ip = '10.0.0.69'
 plug2_ip = '10.0.0.167'
 
-def plug_init():
-    global plug1, plug2
+async def turn_plug1_on():
+    global plug1_ip
     plug1 = SmartPlug(plug1_ip)
-    plug2 = SmartPlug(plug1_ip)
-
-def discover_devices():
-    devices = asyncio.run(Discover.discover())
-    for addr, dev in devices.items():
-        asyncio.run(dev.update())
-        print(f"{addr} >> {dev}")   
-
-def get_device_info(plug):
-    asyncio.run(plug.update())
-    print("Hardware: %s" % pf(plug.hw_info))
-    print("Full sysinfo: %s" % pf(plug.sys_info))
-    
-def get_emeter_status(plug):
-    print("Current consumption: %s" % await plug.get_emeter_realtime())
-    print("Per day: %s" % await plug.get_emeter_daily(year=2016, month=12))
-    print("Per month: %s" % await plug.get_emeter_monthly(year=2016))
-    
-def get_device_state():
-    print("Current state: %s" % plug.is_on)
-
-def get_plug1_state():
-    global plug1
-    return plug1.is_on
-
-def plug1_on():
+    await plug1.update()
     await plug1.turn_on()
 
-def plug1_off():
+async def turn_plug1_off():
+    global plug1_ip
+    plug1 = SmartPlug(plug1_ip)
+    await plug1.update()
     await plug1.turn_off()
+    
+async def turn_plug2_on():
+    global plug2_ip
+    plug2 = SmartPlug(plug2_ip)
+    await plug2.update()
+    await plug2.turn_on()
 
-plug_init()
-discover_devices()
-get_device_info(plug1_ip)
-get_device_info(plug1)
-get_device_info(plug2)
+async def turn_plug2_off():
+    global plug2_ip
+    plug2 = SmartPlug(plug2_ip)
+    await plug2.update()
+    await plug2.turn_off()
 
-
-
-
-
-
+def plug1_on():
+    asyncio.run(turn_plug1_on())
+    
+def plug1_off():
+    asyncio.run(turn_plug1_off())
+    
+def plug2_on():
+    asyncio.run(turn_plug2_on())
+    
+def plug2_off():
+    asyncio.run(turn_plug2_off()) 
