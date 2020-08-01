@@ -4,28 +4,75 @@
 # Description : Controls Exhaust Fan
 ###############################################################################
 
+from time import sleep
 import Plug
-import Temperature
 
-def Turn_On_Fan():
-    Plug.plug1_on()
+fan1_config = {"name" : "Exhaust Fan"}
+
+fan_array = {}
+fan_array[0] = fan1_config
+
+class Fan:
+    def __init__(self, config):
+        self.name = config["name"]
+        self.state = False
+        self.previous_s = False
+        self.Process_Fan()
+        
+    def Turn_On(self):
+        Plug.plug1_on()
     
-def Turn_Off_Fan():
-    Plug.plug1_off()
+    def Turn_Off(self):
+        Plug.plug1_off()
     
-def Get_Fan_State():
-    fan_state = Plug.get_plug1_state()
-    return fan_state
+    def Get_Name(self):
+        return self.name
 
-def Process_Fan():
-    temp_f = Temperature.get_temperature_f()
-    if temp_f > 80:
-        Turn_On_Fan()
-    else:
-        Turn_Off_Fan()
+    def Get_State(self):
+        return self.state
 
-def Print_Fan_State():
-    if Get_Fan_State():
-        print("Fan is On")
-    else:
-        print("Fan is Off")
+    def Process_Fan(self):
+        print("Processing        :", self.name)
+        try: 
+            self.state = Plug.get_plug1_state()
+        except: 
+            print("SIGNAL SNA        :", self.name)
+            self.state = self.previous_s
+        else:
+            print("Success Processing:", self.name)
+            self.previous_s = self.state
+        finally:
+            pass
+            
+    
+def get_fan_configs():
+    return fan_array
+    
+def fan_test():   
+    print("Fan.py: Fan Test")
+    fan_configs = get_fan_configs()
+    fan1 = Fan(fan_configs[0])
+    
+    while True:
+        fan1.Process_Fan()
+        print("Fan Name : ", fan1.Get_Name())
+        print("Fan State: ", fan1.Get_State())
+        fan1.Turn_On()
+        sleep(3)
+        fan1.Process_Fan()
+        print("Fan Name : ", fan1.Get_Name())
+        print("Fan State: ", fan1.Get_State())
+        fan1.Turn_Off()
+        sleep(3)
+        fan1.Process_Fan()
+        print("Fan Name : ", fan1.Get_Name())
+        print("Fan State: ", fan1.Get_State())
+        sleep(3)
+      
+if __name__ == '__main__':
+    Plug.init_plug()
+    fan_test()   
+    
+    
+    
+    
