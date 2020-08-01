@@ -6,30 +6,32 @@
 
 import asyncio
 import time
+from datetime import datetime
+from periodic import Periodic
+
+
+async def periodic_10s_tasks(param):
+    print(datetime.now(), 'Yay!', param)
+    await asyncio.sleep(10)
+
+async def periodic_30s_tasks(param):
+    print(datetime.now(), 'Yay!', param)
+    await asyncio.sleep(30)
+    
+async def periodic_60s_tasks(param):
+    print(datetime.now(), 'Yay!', param)
+    await asyncio.sleep(60)
 
 async def main():
-    T10s = asyncio.create_task(task10s())
-    T30s = asyncio.create_task(task30s())
-    T60s = asyncio.create_task(task60s())
-    await T10s
-    await T30s
-    await T60s
-
-async def task10s():
-    await asyncio.sleep(1)
-    print("10s")
-    print(f"time is {time.strftime('%X')}")
+    Loop_10s = Periodic(1, periodic_10s_tasks, '10s_loop')
+    await Loop_10s.start()
+    Loop_30s = Periodic(3, periodic_30s_tasks, '30s_loop')
+    await Loop_30s.start()
+    Loop_60s = Periodic(6, periodic_60s_tasks, '60s_loop')
+    await Loop_60s.start()
     
-async def task30s():
-    await asyncio.sleep(3)
-    print("30s")
-    print(f"time is {time.strftime('%X')}")
-    
-async def task60s():
-    await asyncio.sleep(6)
-    print("60s")
-    print(f"time is {time.strftime('%X')}")
-
-while True:
-    asyncio.run(main())
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.create_task(main())
+    loop.run_forever()
     

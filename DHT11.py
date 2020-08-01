@@ -10,33 +10,31 @@ import sys
 import Adafruit_DHT
 
 sensor = 11
-pin = 17
+pin_1 = 17
+pin_2 = 26
 
-def print_instant_humidity():
-    # Try to grab a sensor reading.  Use the read_retry method which will retry up
-    # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
-    global sensor, pin
-    humidity, temperature_c = Adafruit_DHT.read_retry(sensor, pin)    
-    # Un-comment the line below to convert the temperature to Fahrenheit.
-    #temperature_f = temperature_c * 9/5.0 + 32
+def process_sensor_1():
+    global humidity_1, temperature_c_1, temperature_f_1
+    humidity_1, temperature_c_1 = Adafruit_DHT.read_retry(sensor, pin_1)
+    temperature_f_1 = temperature_c_1 * 9/5.0 + 32
+    
+def process_sensor_2():
+    global humidity_2, temperature_c_2, temperature_f_2
+    humidity_2, temperature_c_2 = Adafruit_DHT.read_retry(sensor, pin_2)
+    temperature_f_2 = temperature_c_2 * 9/5.0 + 32
 
-    # Note that sometimes you won't get a reading and
-    # the results will be null (because Linux can't
-    # guarantee the timing of calls to read the sensor).
-    # If this happens try again!
-    if humidity is not None and temperature_c is not None:
-        print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature_c, humidity))
-    else:
-        print('Failed to get reading. Try again!')
-        sys.exit(1)
+def get_humidity_1():
+    global humidity_1
+    return humidity_1
     
-def get_humidity_percent():
-    global sensor, pin
-    humidity, temperature_c = Adafruit_DHT.read_retry(sensor, pin)
-    return humidity
+def get_temp_1():
+    global temperature_f_1
+    return temperature_f_1
+
+def get_temp_2():
+    global temperature_f_2
+    return temperature_f_2
     
-def get_temperature_degree_c():
-    global sensor, pin
-    humidity, temperature_c = Adafruit_DHT.read_retry(sensor, pin)
-    return temperature_c
-    
+def get_humidity_2():
+    global humidity_2
+    return humidity_2

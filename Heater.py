@@ -4,8 +4,8 @@
 # Description: Heater Controls
 ###############################################################################
 
-from Humidity import get_humidity
-from Temperature import get_temperature_f
+
+import DHT11
 from Songle import relay1_on, relay1_off
 
 heater_cooldown_period = 10 #minutes
@@ -15,6 +15,7 @@ heater_state = False
 heater_on_time = 0
 heater_off_time = 0
 
+
 def init_heater():
     heater_off()
 
@@ -23,10 +24,8 @@ def process_heater():
     print("Process_heater")
     print("Heater On Time: ", heater_on_time, " Minutes")
     print("Heater Off Time: ", heater_off_time, " Minutes")
-    humidity = get_humidity()
-    print(humidity)
-    temp_f = get_temperature_f()
-    print(temp_f)
+    humidity = DHT11.get_humidity_1()
+    temp_f = DHT11.get_temp_1()
     
     if(heater_state):
         heater_on_time +=1
@@ -34,7 +33,7 @@ def process_heater():
         heater_off_time +=1
    
     if(temp_f < 83):
-        if(humidity > 60):
+        if(humidity > 59):
             heater_on()
             print("Heater On")
         else:

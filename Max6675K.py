@@ -8,8 +8,10 @@
 import spidev
 import time
 
-def init_tempSensor(bus, device):
+def init_tempSensor():
     global spi
+    bus = 0
+    device = 0
     spi = spidev.SpiDev() # create spi object
     spi.open(bus, device) # open spi port 0, device (CS) 0
     spi.max_speed_hz = 1953000

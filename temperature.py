@@ -19,7 +19,7 @@ def init_temperature():
 
 def process_temperature():
     global last_temp_c, last_temp_f
-    last_temp_c = DHT11.get_temperature_degree_c()
+    last_temp_c = DHT11.get_temperature1_degree_c()
     last_temp_f = last_temp_c * 9/5.0 + 32
     add_temperature_data_to_list(last_temp_f)
     print("The Temperature is: ", last_temp_f)
