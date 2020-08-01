@@ -1,3 +1,8 @@
 
 *.pyc
 *.pyc
+*.pyc
+fan_log.txt
+temperature_log.txt
+temperature_log.txt
+temperature_log.txt

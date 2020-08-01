@@ -4,37 +4,88 @@
 # Description: Reads humidity sensor
 ###############################################################################
 
-#!/usr/bin/python
-
 import sys
+import time
 import Adafruit_DHT
 
-sensor = 11
-pin_1 = 17
-pin_2 = 26
+sensor1_config = {"name" : "Upper Sensor", "data_pin":17}
+sensor2_config = {"name" : "Lower Sensor", "data_pin":26}
 
-def process_sensor_1():
-    global humidity_1, temperature_c_1, temperature_f_1
-    humidity_1, temperature_c_1 = Adafruit_DHT.read_retry(sensor, pin_1)
-    temperature_f_1 = temperature_c_1 * 9/5.0 + 32
-    
-def process_sensor_2():
-    global humidity_2, temperature_c_2, temperature_f_2
-    humidity_2, temperature_c_2 = Adafruit_DHT.read_retry(sensor, pin_2)
-    temperature_f_2 = temperature_c_2 * 9/5.0 + 32
+dht11_sensor_array = {}
+dht11_sensor_array[0] = sensor1_config
+dht11_sensor_array[1] = sensor2_config
 
-def get_humidity_1():
-    global humidity_1
-    return humidity_1
+class Sensor:
+    def __init__(self, config):
+        self.sensor_type = 11
+        self.pin = config["data_pin"]
+        self.name = config["name"]
+        self.humidity = None
+        self.temperature_c = None
+        self.temperature_f = None
+        self.previous_c = None
+        self.previous_f = None
+        self.previous_h = None
+        self.process_sensor()
+        
+    def process_sensor(self):
+        print("Processing: ", self.name)
+        try:
+            self.humidity, self.temperature_c = Adafruit_DHT.read_retry(self.sensor_type, self.pin)
+            self.temperature_f = self.temperature_c * 9/5.0 + 32
+        except:
+            print("SIGNAL SNA:",self.name)
+            self.humidity = self.previous_h
+            self.temperature_f = self.previous_f
+            self.temperature_c = self.previous_c
+        else:
+            print("Success Processing:", self.name)
+            self.previous_c = self.temperature_c 
+            self.previous_f = self.temperature_f 
+            self.previous_h = self.humidity
+        finally:
+            print("Sensor Updated")
     
-def get_temp_1():
-    global temperature_f_1
-    return temperature_f_1
+    def get_sensor_name(self):
+        return self.name
+    
+    def get_temp_c(self):
+        return self.temperature_c
+        
+    def get_temp_f(self):
+        return self.temperature_f
+        
+    def get_humidity(self):
+        return self.humidity
+#end: class Sensor:
 
-def get_temp_2():
-    global temperature_f_2
-    return temperature_f_2
+def get_dht11_configs():
+    return dht11_sensor_array
+
+def sensor_test():
+    print("DHT11.py Sensor Test")
     
-def get_humidity_2():
-    global humidity_2
-    return humidity_2
+    config_array = get_dht11_configs()
+    sensor1_config = config_array[0]
+    sensor2_config = config_array[1]
+    sensor1 = Sensor(sensor1_config)
+    sensor2 = Sensor(sensor2_config)
+    
+    while True:
+        sensor1.process_sensor()
+        sensor2.process_sensor()
+        print("Sensor: " ,sensor1.get_sensor_name())
+        print("tempc : " ,sensor1.get_temp_c())
+        print("tempf : " ,sensor1.get_temp_f())
+        print("humit : " ,sensor1.get_humidity())
+        print("Sensor: " ,sensor2.get_sensor_name())
+        print("tempc : " ,sensor2.get_temp_c())
+        print("tempf : " ,sensor2.get_temp_f())
+        print("humit : " ,sensor2.get_humidity())
+        time.sleep(3)
+    
+    
+if __name__ == '__main__':
+    sensor_test() 
+    
+    
