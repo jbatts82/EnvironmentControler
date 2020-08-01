@@ -6,73 +6,69 @@
 
 import schedule
 import time
-from datetime import datetime
-import Humidity
-import Temperature
-import Heater
-import Songle
-import Plug
-import Fan
-import Light
+
+from Time_Clock import get_time
+
+import Plug #import and init first
+
 import DHT11
+from DHT11 import Sensor
 
-six_pm = "23:00"
-seven_pm = "24:00"
-eight_pm = "01:00"
-nine_pm = "02:00"
+from Fan import Fan
+from Fan import get_fan_configs
+
+from Heater import Heater
 
 
-    
 def Task_60s():
-    get_time()
-    Fan.Process_Fan()
-    Fan.Print_Fan_State()
-    Heater.process_heater()
-    
-def get_time():
-    now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
-    print("Current Time =", current_time)
-    return current_time
+    print("*******************************************************************************")
+    print("Current Time      : ", get_time())
+    print("Sensor            : ", sensor1.get_sensor_name())
+    print("Temp              : ", sensor1.temperature_f)
+    print("Humidity          : ", sensor1.humidity)
+    print("Sensor            : ", sensor2.get_sensor_name())
+    print("Temp              : ", sensor2.temperature_f)
+    print("Humidity          : ", sensor2.humidity)
+    print("Fan Name          : ", fan1.Get_Name())
+    print("Fan State         : ", fan1.Get_State())
+    print("Heater Name       : ", heater.Get_Name())
+    print("Heater State      : ", heater.Get_State())
+    print("*******************************************************************************")
 
-def sensor1():
-    try:
-        DHT11.process_sensor_1()
-    except:
-        print("Sensor1 ERROR")
-    finally:
-        print("Sensor1 Humidity: ", DHT11.get_humidity_1())
-        print("Sensor1 Temp_F: ", DHT11.get_temp_1())
-    
-def sensor2():
-    try:
-        DHT11.process_sensor_2()
-    except:
-        print("Sensor2 ERROR")
-    finally:
-        print("Sensor2 Humidity: ", DHT11.get_humidity_2())
-        print("Sensor2 Temp_F: ", DHT11.get_temp_2())
-    
-    
-schedule.every(60).seconds.do(Task_60s)
-schedule.every().minute.at(":00").do(sensor1)
-#schedule.every().minute.at(":30").do(sensor2)
 
-Humidity.init_humidity()
-Temperature.init_temperature()
+#init wireless plugs
 Plug.init_plug()
 
+#init sensors
+config_array = DHT11.get_dht11_configs()
+sensor1_config = config_array[0]
+sensor2_config = config_array[1]
+sensor1 = Sensor(sensor1_config)
+sensor2 = Sensor(sensor2_config)
+
+#init fans
+fan_configs = get_fan_configs()
+fan1 = Fan(fan_configs[0])
+
+#init heater
+heater = Heater()
+
+#schedule routines
+schedule.every(60).seconds.do(Task_60s)
+schedule.every().minute.at(":00").do(sensor1.process_sensor)
+schedule.every().minute.at(":15").do(fan1.Process_Fan)
+schedule.every().minute.at(":30").do(sensor2.process_sensor)
+
+
 try:
-    while True:
+    while True: #run forever
         schedule.run_pending()
         time.sleep(1)
-except KeyboardInterrupt:
-    print("quitting by keyboard")
+except:
+    print("System Error")
 finally:
+    heater.Turn_Off()
     print("bye..bye")
-    Humidity.save_humidity_to_file()
-    Temperature.save_temperature_to_file()
-    Songle.shut_down()
     
     
 
