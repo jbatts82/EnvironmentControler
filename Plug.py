@@ -16,6 +16,7 @@ async def init_the_plugs():
     plug1 = SmartPlug(plug1_ip)
     plug2 = SmartPlug(plug2_ip)
     await plug1.update()
+    await plug2.update()
     
 async def turn_plug1_on():
     global plug1
@@ -23,6 +24,13 @@ async def turn_plug1_on():
 
 async def turn_plug1_off():
     await plug1.turn_off()
+
+async def turn_plug2_on():
+    global plug2
+    await plug2.turn_on()
+
+async def turn_plug2_off():
+    await plug2.turn_off()
 
 async def is_plug1_on():
     global plug1
