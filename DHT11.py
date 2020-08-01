@@ -29,12 +29,12 @@ class Sensor:
         self.process_sensor()
         
     def process_sensor(self):
-        print("Processing: ", self.name)
+        print("Processing        :", self.name)
         try:
             self.humidity, self.temperature_c = Adafruit_DHT.read_retry(self.sensor_type, self.pin)
             self.temperature_f = self.temperature_c * 9/5.0 + 32
         except:
-            print("SIGNAL SNA:",self.name)
+            print("SIGNAL SNA        :",self.name)
             self.humidity = self.previous_h
             self.temperature_f = self.previous_f
             self.temperature_c = self.previous_c
@@ -44,7 +44,7 @@ class Sensor:
             self.previous_f = self.temperature_f 
             self.previous_h = self.humidity
         finally:
-            print("Sensor Updated")
+            pass
     
     def get_sensor_name(self):
         return self.name
@@ -63,7 +63,7 @@ def get_dht11_configs():
     return dht11_sensor_array
 
 def sensor_test():
-    print("DHT11.py Sensor Test")
+    print("DHT11.py: Sensor Test")
     
     config_array = get_dht11_configs()
     sensor1_config = config_array[0]
