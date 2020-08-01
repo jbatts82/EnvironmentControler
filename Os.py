@@ -6,36 +6,41 @@
 
 import schedule
 import time
-
+import Songle
 from Time_Clock import get_time
-
 import Plug #import and init first
-
 import DHT11
 from DHT11 import Sensor
-
 from Fan import Fan
 from Fan import get_fan_configs
-
 from Heater import Heater
+from Light import Light
 
 
+def system_status():
+    print("*******************************************************************************")
+    print("Current Time      :", get_time())
+    print("Sensor            :", sensor1.get_sensor_name())
+    print("Temp              :", sensor1.temperature_f)
+    print("Humidity          :", sensor1.humidity)
+    print("Sensor            :", sensor2.get_sensor_name())
+    print("Temp              :", sensor2.temperature_f)
+    print("Humidity          :", sensor2.humidity)
+    print("Fan Name          :", fan1.Get_Name())
+    print("Fan State         :", fan1.Get_State())
+    print("Heater Name       :", heater.Get_Name())
+    print("Heater State      :", heater.Get_State())
+    print("Light Name        :", light.Get_Name())
+    print("Light State       :", light.Get_State())
+    print("*******************************************************************************")
+
+def Environment_Controller():
+    print("Processing        : Environmental Variables")
+    
 def Task_60s():
-    print("*******************************************************************************")
-    print("Current Time      : ", get_time())
-    print("Sensor            : ", sensor1.get_sensor_name())
-    print("Temp              : ", sensor1.temperature_f)
-    print("Humidity          : ", sensor1.humidity)
-    print("Sensor            : ", sensor2.get_sensor_name())
-    print("Temp              : ", sensor2.temperature_f)
-    print("Humidity          : ", sensor2.humidity)
-    print("Fan Name          : ", fan1.Get_Name())
-    print("Fan State         : ", fan1.Get_State())
-    print("Heater Name       : ", heater.Get_Name())
-    print("Heater State      : ", heater.Get_State())
-    print("*******************************************************************************")
-
-
+    system_status()
+    Environment_Controller()
+    
 #init wireless plugs
 Plug.init_plug()
 
@@ -53,12 +58,15 @@ fan1 = Fan(fan_configs[0])
 #init heater
 heater = Heater()
 
+#init light
+light = Light()
+
 #schedule routines
 schedule.every(60).seconds.do(Task_60s)
 schedule.every().minute.at(":00").do(sensor1.process_sensor)
 schedule.every().minute.at(":15").do(fan1.Process_Fan)
 schedule.every().minute.at(":30").do(sensor2.process_sensor)
-
+schedule.every().minute.at(":45").do(light.Process_Light)
 
 try:
     while True: #run forever
@@ -67,7 +75,7 @@ try:
 except:
     print("System Error")
 finally:
-    heater.Turn_Off()
+    heater.Kill()
     print("bye..bye")
     
     
