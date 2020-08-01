@@ -35,9 +35,9 @@ class Sensor:
             self.temperature_f = self.temperature_c * 9/5.0 + 32
         except:
             print("SIGNAL SNA        :",self.name)
-            self.humidity = self.previous_h
-            self.temperature_f = self.previous_f
             self.temperature_c = self.previous_c
+            self.temperature_f = self.previous_f
+            self.humidity = self.previous_h
         else:
             print("Success Processing:", self.name)
             self.previous_c = self.temperature_c 

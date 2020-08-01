@@ -14,7 +14,6 @@ relay_array = {}
 relay_array[0] = relay1_config
 relay_array[1] = relay2_config
 
-
 class Relay:
     def __init__(self, config):
         self.name = config["name"]

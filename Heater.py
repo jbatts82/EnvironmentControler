@@ -17,11 +17,11 @@ class Heater:
 
     def Turn_On(self):
         self.relay1.Turn_On()
-        self.state = False
+        self.state = True
     
     def Turn_Off(self):
         self.relay1.Turn_Off()
-        self.state = True
+        self.state = False
     
     def Get_Name(self):
         return self.name

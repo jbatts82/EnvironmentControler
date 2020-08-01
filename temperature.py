@@ -6,6 +6,7 @@
 
 import DHT11
 import File_Handler
+import Max6675K
 
 temperature_list = []
 temperature_file = 'temperature_log.txt'
@@ -16,6 +17,7 @@ avg_10min_temp_f = 0
 
 def init_temperature():
     get_temperature_from_file()
+    Max6675K.init_tempSensor()
 
 def process_temperature():
     global last_temp_c, last_temp_f
@@ -31,6 +33,9 @@ def get_temperature_f():
 def get_temperature_c():
     global last_temp_c
     return last_temp_c
+
+def get_box_temperature_f():
+    return Max6675K.getTemp()
 
 def get_temperature_from_file():
     # open file and put into list

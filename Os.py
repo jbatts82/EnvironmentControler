@@ -21,11 +21,11 @@ def system_status():
     print("*******************************************************************************")
     print("Current Time      :", get_time())
     print("Sensor            :", sensor1.get_sensor_name())
-    print("Temp              :", sensor1.temperature_f)
-    print("Humidity          :", sensor1.humidity)
+    print("Temp F            :", sensor1.get_temp_f())
+    print("Humidity          :", sensor1.get_humidity())
     print("Sensor            :", sensor2.get_sensor_name())
-    print("Temp              :", sensor2.temperature_f)
-    print("Humidity          :", sensor2.humidity)
+    print("Temp F            :", sensor2.get_temp_f())
+    print("Humidity          :", sensor2.get_humidity())
     print("Fan Name          :", fan1.Get_Name())
     print("Fan State         :", fan1.Get_State())
     print("Heater Name       :", heater.Get_Name())
@@ -36,6 +36,21 @@ def system_status():
 
 def Environment_Controller():
     print("Processing        : Environmental Variables")
+    avg_humidity = (sensor1.get_humidity() + sensor2.get_humidity()) / 2
+    print("Avg Humidity      :", avg_humidity)
+    avg_temp = (sensor1.get_temp_f() + sensor2.get_temp_f()) / 2
+    print("Avg Temp F        :", avg_temp)
+    
+    if avg_temp < 83:
+        fan1.Turn_Off()
+        if avg_humidity > 59:
+            heater.Turn_On()
+        else:
+            heater.Turn_Off()
+    else:
+        heater.Turn_Off()
+        fan1.Turn_On()
+    
     
 def Task_60s():
     system_status()
