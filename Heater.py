@@ -4,53 +4,59 @@
 # Description: Heater Controls
 ###############################################################################
 
+import Songle
+from time import sleep
+from Songle import Relay
 
-import DHT11
-from Songle import relay1_on, relay1_off
+class Heater:
+    def __init__(self):
+        self.name = "Space Heater"
+        self.state = False
+        self.relay_configs = Songle.get_relay_configs()
+        self.relay1 = Relay(self.relay_configs[0])
 
-heater_cooldown_period = 10 #minutes
-process_period = 1 #minute
-needs_cool_down = False
-heater_state = False
-heater_on_time = 0
-heater_off_time = 0
-
-
-def init_heater():
-    heater_off()
-
-def process_heater():
-    global heater_cooldown_period, process_period, needs_cool_down, heater_on_time, heater_off_time
-    print("Process_heater")
-    print("Heater On Time: ", heater_on_time, " Minutes")
-    print("Heater Off Time: ", heater_off_time, " Minutes")
-    humidity = DHT11.get_humidity_1()
-    temp_f = DHT11.get_temp_1()
+    def Turn_On(self):
+        self.relay1.Turn_On()
+        self.state = False
     
-    if(heater_state):
-        heater_on_time +=1
-    else:
-        heater_off_time +=1
-   
-    if(temp_f < 83):
-        if(humidity > 59):
-            heater_on()
-            print("Heater On")
-        else:
-            heater_off()
-            print("Heater Off")
-    else:
-        heater_off()
+    def Turn_Off(self):
+        self.relay1.Turn_Off()
+        self.state = True
+    
+    def Get_Name(self):
+        return self.name
+
+    def Get_State(self):
+        return self.state
+        
+    def Kill(self):
+        self.relay1.Turn_Off()
+        self.state = True
         print("Heater Off")
         
-def heater_on():
-    global heater_state
-    heater_state = True
-    relay1_on()
-    
-def heater_off():
-    global heater_state
-    heater_state = False
-    relay1_off()
-    
+def heater_test():
+    print("Heater.py: Heater Test")   
+    num = 0
+    while True:
+        num = not num
+        print("Heater Name : ", heater.Get_Name())
+        if num:
+            heater.Turn_On()
+        else:
+            heater.Turn_Off()
+        print("Heater State: ", heater.Get_State())
+        sleep(5)
+
+
+
+if __name__ == '__main__':
+    try:
+        heater = Heater()
+        heater_test()
+    except:
+        heater.Turn_Off()
+        print("Heater Off")
+    finally:
+        pass
+
     
