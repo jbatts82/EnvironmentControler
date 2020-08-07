@@ -13,3 +13,4 @@ __pycache__/DHT11.cpython-37.pyc
 humidity_log.txt
 test.txt
 test.txt
+*.txt
