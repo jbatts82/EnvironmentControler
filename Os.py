@@ -7,25 +7,30 @@
 import schedule
 import time
 import Songle
-from Time_Clock import get_time
+import Time_Clock
 import Plug #import and init first
-import DHT11
-from DHT11 import Sensor
+import Csv_Handler as csv_handle
+from DHT11 import Sensor, get_dht11_configs
 from Fan import Fan
 from Fan import get_fan_configs
 from Heater import Heater
 from Light import Light
+from Csv_Handler import CSV_Tool
+from Humidity import Humidity
+
 
 
 def system_status():
     print("*******************************************************************************")
-    print("Current Time      :", get_time())
+    print("Date              :", Time_Clock.date_now())
+    print("Current Time      :", Time_Clock.time_now())
     print("Sensor            :", sensor1.get_sensor_name())
     print("Temp F            :", sensor1.get_temp_f())
     print("Humidity          :", sensor1.get_humidity())
     print("Sensor            :", sensor2.get_sensor_name())
     print("Temp F            :", sensor2.get_temp_f())
     print("Humidity          :", sensor2.get_humidity())
+    print("Avg Humidity      :", the_humidity.get_average_humidity())
     print("Fan Name          :", fan1.Get_Name())
     print("Fan State         :", fan1.Get_State())
     print("Heater Name       :", heater.Get_Name())
@@ -50,21 +55,27 @@ def Environment_Controller():
     else:
         heater.Turn_Off()
         fan1.Turn_On()
-    
-    
+
+
+
 def Task_60s():
+    the_humidity.process_humidity()
     system_status()
     Environment_Controller()
-    
+
+   
 #init wireless plugs
 Plug.init_plug()
 
 #init sensors
-config_array = DHT11.get_dht11_configs()
+config_array = get_dht11_configs()
 sensor1_config = config_array[0]
 sensor2_config = config_array[1]
 sensor1 = Sensor(sensor1_config)
 sensor2 = Sensor(sensor2_config)
+
+#init humidity data
+the_humidity = Humidity(sensor1, sensor2)
 
 #init fans
 fan_configs = get_fan_configs()
