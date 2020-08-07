@@ -1,55 +1,60 @@
 ###############################################################################
 # Filename    : Humidity.py
 # Date        : 07/25/2020 
-# Description :
+# Description : Processes humidity sensor data. 
 ###############################################################################
 
 import DHT11
-import time
-import File_Handler
+from DHT11 import Sensor
+import Csv_Handler
 
-humidity_list = []
-humidity_file = 'humidity_log.txt'
-current_humidity1_per = 0
-current_humidity2_per = 0
+file_name = 'humidity_log.txt'
+field_names = field_names = ['date', 'time', 'avg_humidity']
 
-def init_humidity():
-    get_humidity_from_file()
-
-def process_humidity():
-    global current_humidity1_per
-    current_humidity1_per = DHT11.get_humidity1_percent()
-    time.sleep(3)
-    current_humidity2_per = DHT11.get_humidity2_percent()
-
-def get_humidity1():
-    global current_humidity1_per
-    return current_humidity1_per
-
-def get_humidity2():
-    global current_humidity2_per
-    return current_humidity2_per
-
-def get_humidity_from_file():
-    # open file and put into list
-    global humidity_list, humidity_file
-    humidity_list = File_Handler.get_from_file(humidity_file)
+class Humidity:
+    def __init__(self, sensor1, sensor2):
+        self.max_humidity = None
+        self.min_humidity = None
+        self.avg_humidity = None
+        self.instant_humidity1 = None
+        self.instant_humidity2 = None
+        self.sensor_cnt = None
+        self.data_log = None
         
-def save_humidity_to_file():
-    global humidity_list, humidity_file
-    File_Handler.save_to_file(humidity_list, humidity_file)
+        self.sensor1 = sensor1
+        self.sensor2 = sensor2
         
-def add_humidity_data_to_list(hum_data):
-    global humidity_list
-    humidity_list.append(hum_data)
+        self.process_humidity()
 
-def print_humidity():
-    # read through the list
-    global humidity_list
-    print("Printing Humidity: ")
-    for line in humidity_list:
-        print(line)
+
+    def calculate_avg_humidity(self):
+        return (self.instant_humidity1 + self.instant_humidity2) / 2
+    
+    def get_average_humidity(self):
+        return self.avg_humidity
         
-def erase_humidity_file():
-    global humidity_file
-    File_Handler.erase_file(humidity_file)
+    def get_humidity1(self):
+        return self.instant_humidity1
+    
+    def get_humidity2(self):
+        return self.instant_humidity2
+        
+    def process_humidity(self):
+        self.instant_humidity1 = self.sensor1.get_humidity()
+        self.instant_humidity2 = self.sensor2.get_humidity()
+        self.avg_humidity = self.calculate_avg_humidity()
+        
+def humidity_test():
+    print("Humidity.py: Humidity Test")
+    the_humidity = Humidity()
+    print("Humidity 1  : ", the_humidity.get_humidity1())
+    print("Humidity 2  : ", the_humidity.get_humidity2())
+    print("Humidity Avg: ", the_humidity.get_average_humidity())
+
+    
+
+
+    
+if __name__ == '__main__':
+    humidity_test() 
+    
