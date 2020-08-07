@@ -40,4 +40,6 @@ def getTemp():
         print("F  : ", F)
     return str(F)
 
-
+init_tempSensor()
+getTemp()
+disconnect()
