@@ -13,12 +13,12 @@ field_names = field_names = ['date', 'time', 'avg_humidity']
 
 class Humidity:
     def __init__(self, sensor1, sensor2):
-        self.max_humidity = 0
-        self.min_humidity = 99
-        self.avg_humidity = 0
-        self.instant_humidity1 = 0
-        self.instant_humidity2 = 0
-        self.sensor_cnt = 0
+        self.max_humidity = None
+        self.min_humidity = None
+        self.avg_humidity = None
+        self.instant_humidity1 = None
+        self.instant_humidity2 = None
+        self.sensor_cnt = None
         self.data_log = None
         
         self.sensor1 = sensor1
@@ -39,28 +39,10 @@ class Humidity:
     def get_humidity2(self):
         return self.instant_humidity2
         
-    def is_max(self, humidity):
-        if humidity > self.max_humidity:
-            self.max_humidity = humidity
-            
-    def is_min(self, humidity):
-        if humidity < self.min_humidity:
-            self.min_humidity = humidity
-        
-    def get_min_humidity(self):
-        return self.min_humidity
-        
-    def get_max_humidity(self):
-        return self.max_humidity
-        
     def process_humidity(self):
         self.instant_humidity1 = self.sensor1.get_humidity()
         self.instant_humidity2 = self.sensor2.get_humidity()
         self.avg_humidity = self.calculate_avg_humidity()
-        self.is_max(self.avg_humidity)
-        self.is_min(self.avg_humidity)
-
-
         
 def humidity_test():
     print("Humidity.py: Humidity Test")

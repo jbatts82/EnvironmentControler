@@ -5,73 +5,58 @@
 ###############################################################################
 
 import DHT11
-from DHT11 import Sensor
-import Csv_Handler
+import File_Handler
+import Max6675K
 
-file_name = 'temperature_log.txt'
-field_names = field_names = ['date', 'time', 'avg_temperature']
+temperature_list = []
+temperature_file = 'temperature_log.txt'
+last_temp_c = 0
+last_temp_f = 0
+avg_10min_temp_c = 0
+avg_10min_temp_f = 0
 
-class Temperature:
-    def __init__(self, sensor1, sensor2):
-        self.max_temperature = 0
-        self.min_temperature = 99
-        self.avg_temperature = 0
-        self.instant_temperature1 = 0
-        self.instant_temperature2 = 0
-        self.sensor_cnt = 0
-        self.data_log = None
-        
-        self.sensor1 = sensor1
-        self.sensor2 = sensor2
-        
-        self.process_temperature()
+def init_temperature():
+    get_temperature_from_file()
+    Max6675K.init_tempSensor()
 
+def process_temperature():
+    global last_temp_c, last_temp_f
+    last_temp_c = DHT11.get_temperature1_degree_c()
+    last_temp_f = last_temp_c * 9/5.0 + 32
+    add_temperature_data_to_list(last_temp_f)
+    print("The Temperature is: ", last_temp_f)
 
-    def calculate_avg_temperature(self):
-        return (self.instant_temperature1 + self.instant_temperature2) / 2
+def get_temperature_f():
+    global last_temp_f
+    return last_temp_f
     
-    def get_average_temperature(self):
-        return self.avg_temperature
-        
-    def get_temperature1(self):
-        return self.instant_temperature1
-    
-    def get_temperature2(self):
-        return self.instant_temperature2
-        
-    def is_max(self, temperature):
-        if temperature > self.max_temperature:
-            self.max_temperature = temperature
-            
-    def is_min(self, temperature):
-        if temperature < self.min_temperature:
-            self.min_temperature = temperature
-        
-    def get_min_temperature(self):
-        return self.min_temperature
-        
-    def get_max_temperature(self):
-        return self.max_temperature
-        
-    def process_temperature(self):
-        self.instant_temperature1 = self.sensor1.get_temp_f()
-        self.instant_temperature2 = self.sensor2.get_temp_f()
-        self.avg_temperature = self.calculate_avg_temperature()
-        self.is_max(self.avg_temperature)
-        self.is_min(self.avg_temperature)
+def get_temperature_c():
+    global last_temp_c
+    return last_temp_c
 
+def get_box_temperature_f():
+    return Max6675K.getTemp()
 
+def get_temperature_from_file():
+    # open file and put into list
+    global temperature_list, temperature_file
+    temperature_list = File_Handler.get_from_file(temperature_file)
         
-def temperature_test():
-    print("Temperature.py: Temperature Test")
-    the_temperature = Temperature()
-    print("Temperature 1  : ", the_temperature.get_temperature1())
-    print("Temperature 2  : ", the_temperature.get_temperature2())
-    print("Temperature Avg: ", the_temperature.get_average_temperature())
+def save_temperature_to_file():
+    global temperature_list, temperature_file
+    File_Handler.save_to_file(temperature_list, temperature_file)
+        
+def add_temperature_data_to_list(hum_data):
+    global temperature_list
+    temperature_list.append(hum_data)
 
-    
-
-
-    
-if __name__ == '__main__':
-    temperature_test() 
+def print_temperature():
+    # read through the list
+    global temperature_list
+    print("Printing temperature: ")
+    for line in temperature_list:
+        print(line)
+        
+def erase_temperature_file():
+    global temperature_file
+    File_Handler.erase_file(temperature_file)
