@@ -11,10 +11,10 @@ import datetime
 from time import sleep
 import time
 import random
-import Time_Clock as tc
+import Time_Clock
 
-file_name = 'test_readings.csv'
-field_names = ['date', 'time', 'temp', 'humidity']
+#file_name = 'test_readings.csv'
+#field_names = ['abs_time', 'temp', 'humidity']
 
 class CSV_Tool:
     def __init__(self, file_name, field_names):
@@ -48,26 +48,27 @@ class CSV_Tool:
     def empty_file(self):
         with open(self.file_name, mode='w') as file:
             file.close()
+            
 
+    
+    
 def csv_test():
     print("Csv_Handler.py: Csv Test")
     the_tool = CSV_Tool(file_name, field_names)
+    the_time = Time_Clock.OS_Clock()
+    
     record = {}
-    start_time = time.time()
     for x in range(100):
-        record['date'] = tc.date_now()
-        record['time'] = tc.time_now()
+        record['abs_time'] = the_time.get_current_time_stamp()
         record['temp'] = random.uniform(32, 120)
         record['humidity'] = random.uniform(32, 120)
         the_tool.append_to_file(record)
     the_tool.dump_record_values()
     the_tool.empty_file()
-    finish_time = time.time()
-    duration = finish_time - start_time
-    print("Start: ", start_time)
-    print("Finish: ", finish_time)
-    print("Duration: ", duration)
-    
+
+
+
+
     
 if __name__ == "__main__":
     csv_test()

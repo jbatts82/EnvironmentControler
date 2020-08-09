@@ -7,9 +7,11 @@
 import DHT11
 from DHT11 import Sensor
 import Csv_Handler
+from Csv_Handler import CSV_Tool
+import Time_Clock
 
 file_name = 'temperature_log.txt'
-field_names = field_names = ['date', 'time', 'avg_temperature']
+field_names = field_names = ['abs_time', 'avg_temperature']
 
 class Temperature:
     def __init__(self, sensor1, sensor2):
@@ -19,7 +21,7 @@ class Temperature:
         self.instant_temperature1 = 0
         self.instant_temperature2 = 0
         self.sensor_cnt = 0
-        self.data_log = None
+        self.data_logger = CSV_Tool(file_name, field_names)
         
         self.sensor1 = sensor1
         self.sensor2 = sensor2
@@ -53,13 +55,20 @@ class Temperature:
     def get_max_temperature(self):
         return self.max_temperature
         
+    def write_temp_to_file(self):
+        the_time = Time_Clock.OS_Clock()
+        record = {}
+        record['abs_time'] = the_time.get_current_time_stamp()
+        record['avg_temperature'] = self.avg_temperature
+        self.data_logger.append_to_file(record)
+            
     def process_temperature(self):
         self.instant_temperature1 = self.sensor1.get_temp_f()
         self.instant_temperature2 = self.sensor2.get_temp_f()
         self.avg_temperature = self.calculate_avg_temperature()
         self.is_max(self.avg_temperature)
         self.is_min(self.avg_temperature)
-
+        self.write_temp_to_file()
 
         
 def temperature_test():
