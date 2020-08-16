@@ -8,21 +8,37 @@ import asyncio
 from kasa import SmartPlug
 from time import sleep
 
+plug1_ip = '10.0.0.69'
+plug2_ip = '10.0.0.168'
+
+# private functions
+
 async def init_the_plugs():
-    global plug1
-    global plug2
-    plug1_ip = '10.0.0.69'
-    plug2_ip = '10.0.0.168'
-    plug1 = SmartPlug(plug1_ip)
-    plug2 = SmartPlug(plug2_ip)
-    await plug1.update()
-    await plug2.update()
-    
+    global plug1, plug2
+    global plug1_error_state, plug2_error_state
+
+    try:
+        plug1 = SmartPlug(plug1_ip)
+        await plug1.update()
+    except:
+        plug1_error_state = True
+    else:
+        plug1_error_state = False
+       
+    try:
+        plug2 = SmartPlug(plug2_ip)
+        await plug2.update()
+    except:
+        plug2_error_state = True
+    else:
+        plug2_error_state = False
+ 
 async def turn_plug1_on():
     global plug1
     await plug1.turn_on()
 
 async def turn_plug1_off():
+    global plug1
     await plug1.turn_off()
 
 async def turn_plug2_on():
@@ -30,6 +46,7 @@ async def turn_plug2_on():
     await plug2.turn_on()
 
 async def turn_plug2_off():
+    global plug2
     await plug2.turn_off()
 
 async def is_plug1_on():
@@ -56,19 +73,32 @@ async def get_plug2_info():
     print(plug2.rssi)
     print(plug2.mac)
 
-def get_plug2_state():
-    plug2_state = asyncio.run(is_plug2_on())
-    return plug2_state
-
-def get_plug1_state():
-    plug1_state = asyncio.run(is_plug1_on())
-    return plug1_state
+# Public Interfaces
 
 def init_plug():
     asyncio.run(init_the_plugs())
 
+def get_plug1_state():
+    try:
+        plug1_state = asyncio.run(is_plug1_on())
+    except:
+        plug1_state = "Error"
+        init_plug()
+    return plug1_state
+
+def get_plug2_state():
+    try:
+        plug2_state = asyncio.run(is_plug2_on())
+    except:
+        plug2_state = "Error"
+        init_plug()
+    return plug2_state
+
 def plug1_info():
     asyncio.run(get_plug1_info())
+    
+def plug2_info():
+    asyncio.run(get_plug2_info())
 
 def plug1_on():
     asyncio.run(turn_plug1_on())
