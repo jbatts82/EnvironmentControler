@@ -18,10 +18,11 @@ from Light import Light
 from Csv_Handler import CSV_Tool
 import Humidity
 import Temperature
+import File_Handler
+import Config
 
 
 def system_status():
-    print("*******************************************************************************")
     print("*******************************************************************************")
     print("Date              :", time_clock.date_now())
     print("Current Time      :", time_clock.time_now())
@@ -54,28 +55,40 @@ def system_status():
     print("*******************************************************************************")
     
 def Environment_Controller():
+    print("*******************************************************************************")
     print("Processing        : Environmental Controls")
-    
     avg_temp = the_temperature.get_average_temperature()
     avg_humidity = the_humidity.get_average_humidity()
-    
-    if avg_temp < 82:
-        fan1.Turn_Off()
-        if avg_humidity > 59:
-            heater.Turn_On()
+    config_dict = Config.get_config_dict()
+    temp_threshold = float(config_dict["max_temp_thresh"])
+    humid_threshold = float(config_dict["max_humidity_thresh"])
+    fan_override = config_dict["fan_overide"]
+
+    print("Fan OverRide      :", fan_override)
+    print("Max Temp          :", temp_threshold)
+    print("Max Humidity      :", humid_threshold)
+
+    if fan_override == "True":
+        fan1.Turn_On()
+    else:
+        if avg_temp < temp_threshold:
+            fan1.Turn_Off()
+            if avg_humidity > 59:
+                heater.Turn_On()
+            else:
+                heater.Turn_Off()
         else:
             heater.Turn_Off()
-    else:
-        heater.Turn_Off()
-        fan1.Turn_On()
-
+            fan1.Turn_On()
+    print("*******************************************************************************")
 
 
 def Task_60s():
     the_humidity.process_humidity()
     the_temperature.process_temperature()
-    system_status()
     Environment_Controller()
+    system_status()
+    
 
    
 #init OS Time Clock
@@ -106,6 +119,12 @@ heater = Heater()
 
 #init light
 light = Light()
+
+#init configuration file
+Config.init_config()
+config_dict = Config.get_config_dict()
+
+
 
 #schedule routines
 schedule.every(60).seconds.do(Task_60s)
