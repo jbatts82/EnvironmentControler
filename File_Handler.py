@@ -7,7 +7,6 @@
 def get_from_file(in_file):
     # open file and put into list
     out_list = []
-    print("Getting From File...")
     with open(in_file, 'r') as filehandle:
         for line in filehandle:
             remove_new_line = line[:-1]
@@ -22,3 +21,7 @@ def save_to_file(in_list, out_file):
 def erase_file(file_to_erase):
     file = open(file_to_erase, 'w')
     file.close()
+    
+def create_file(file_name):
+    f = open(file_name,"w+")
+    return f
