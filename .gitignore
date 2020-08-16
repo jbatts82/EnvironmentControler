@@ -12,5 +12,4 @@ __pycache__/Max6675K.cpython-37.pyc
 __pycache__/DHT11.cpython-37.pyc
 humidity_log.txt
 test.txt
-test.txt
-*.txt
+*.pyc

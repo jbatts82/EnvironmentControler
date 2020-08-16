@@ -12,7 +12,7 @@ async def init_the_plugs():
     global plug1
     global plug2
     plug1_ip = '10.0.0.69'
-    plug2_ip = '10.0.0.167'
+    plug2_ip = '10.0.0.168'
     plug1 = SmartPlug(plug1_ip)
     plug2 = SmartPlug(plug2_ip)
     await plug1.update()
