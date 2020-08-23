@@ -97,12 +97,7 @@ time_clock = Time_Clock.OS_Clock()
 #init wireless plugs
 Plug.init_plug()
 
-#init sensors
-config_array = get_dht11_configs()
-sensor1_config = config_array[0]
-sensor2_config = config_array[1]
-sensor1 = Sensor(sensor1_config)
-sensor2 = Sensor(sensor2_config)
+
 
 #init humidity data
 the_humidity = Humidity.Humidity(sensor1, sensor2)
