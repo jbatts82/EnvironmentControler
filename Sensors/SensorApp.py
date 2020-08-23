@@ -41,7 +41,7 @@ async def process_sensor_1():
     temp = sensor1.get_temp_f()
     humidity = sensor1.get_humidity()
     sensor1_db.write_sensor_data(time, temp, humidity)
-    t.sleep(15)
+    t.sleep(30)
     
 async def process_sensor_2():
     global sensor_2
@@ -51,7 +51,7 @@ async def process_sensor_2():
     temp = sensor2.get_temp_f()
     humidity = sensor2.get_humidity()
     sensor2_db.write_sensor_data(time, temp, humidity)
-    t.sleep(15)
+    t.sleep(30)
 
 async def main_loop():
     await init_sensors()

@@ -59,7 +59,7 @@ class DB_Manager:
     
     def open(self, database):
         try:
-            self.connection = sqlite3.connect(database)
+            self.connection = sqlite3.connect(database, check_same_thread=False)
             self.cursor = self.connection.cursor()
             print(database, " Opened")
         except sqlite3.Error as e:
@@ -73,13 +73,13 @@ class DB_Manager:
             print("Database Closed")
     
     def get_row(self, table, columns, limit=None):
-        cmd = "SELECT {0} from {1};".format(columns, table)
+        cmd = "SELECT {0} FROM {1};".format(columns, table)
         self.cursor.execute(cmd)
         rows = self.cursor.fetchall()
         return rows[len(rows) - limit if limit else 0:]
     
-    def get_last_row(self, table, columns):
-        return self.get_row(table, columns, limit = 1)[0]
+    def get_last_row(self, columns):
+        return self.get_row(self.sensor_table, columns, limit = 1)[0]
            
     def write(self, table, columns, data):
         query = "INSERT INTO {0} ({1}) VALUES ({2});".format(table, columns, data)
@@ -103,8 +103,11 @@ def db_test():
     sensor2_name = DHT11.sensor2_config['name']
     sensor1_db = DB_Manager(database_location, sensor1_name)
     sensor2_db = DB_Manager(database_location, sensor2_name)
-    sensor1_db.print_table()
-    sensor2_db.print_table()
+    # print("print table 1")
+    # sensor1_db.print_table()
+    # print("print table 2")
+    # sensor2_db.print_table()
+    print(sensor1_db.get_last_row("*"))
     
 if __name__ == '__main__':
     db_test() 
