@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends "base.html" %}
 
 {% block content %}
@@ -6,3 +7,21 @@
     <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
     {% endfor %}
 {% endblock %}
+=======
+<!DOCTYPE html>
+   <head>
+	  <link rel="stylesheet" href='../static/style.css'/>
+      <title>{{ title }}</title>
+   </head>
+   <body>
+		<form>
+      <h1>Hello, Me!</h1>
+      <h2>The date and time on the server is: {{ time }}</h2>
+	  <h2>The temperature on in the room is: {{ temp_1 }} F</h2>
+	  <h2>The humdity in the room is: {{ hum }} Percent </h2>
+	  <h2>The Max temperature on in the room is: {{ temp_max }} F</h2>
+	  <h2>The Max humdity in the room is: {{ hum_max }} Percent </h2>
+		</form>
+   </body>
+</html>
+>>>>>>> c301f48e37fce9c2b3e4d5250c5da4698b836ac6
