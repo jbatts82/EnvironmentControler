@@ -8,8 +8,8 @@ import sys
 import time
 import Adafruit_DHT
 
-sensor1_config = {"name" : "Upper Sensor", "data_pin":17}
-sensor2_config = {"name" : "Lower Sensor", "data_pin":26}
+sensor1_config = {"name" : "upper_sensor", "data_pin":17}
+sensor2_config = {"name" : "lower_sensor", "data_pin":26}
 
 dht11_sensor_array = {}
 dht11_sensor_array[0] = sensor1_config
@@ -26,6 +26,7 @@ class Sensor:
         self.previous_c = None
         self.previous_f = None
         self.previous_h = None
+        self.sensor_error = False
         self.process_sensor()
         
     def process_sensor(self):
@@ -35,16 +36,21 @@ class Sensor:
             self.temperature_f = self.temperature_c * 9/5.0 + 32
         except:
             print("SIGNAL SNA        :",self.name)
-            self.temperature_c = None
-            self.temperature_f = None
-            self.humidity = None
+            self.temperature_c = self.previous_c
+            self.temperature_f = self.previous_f
+            self.humidity = self.previous_h
+            self.sensor_error = True
         else:
             print("Success Processing:", self.name)
             self.previous_c = self.temperature_c 
             self.previous_f = self.temperature_f 
             self.previous_h = self.humidity
+            self.sensor_error = False
         finally:
             pass
+    
+    def get_error_state(self):
+        return self.sensor_error
     
     def get_sensor_name(self):
         return self.name
@@ -75,10 +81,12 @@ def sensor_test():
         sensor1.process_sensor()
         sensor2.process_sensor()
         print("Sensor: " ,sensor1.get_sensor_name())
+        print("Error : " ,str(sensor1.get_error_state()))
         print("tempc : " ,sensor1.get_temp_c())
         print("tempf : " ,sensor1.get_temp_f())
         print("humit : " ,sensor1.get_humidity())
         print("Sensor: " ,sensor2.get_sensor_name())
+        print("Error : " ,str(sensor2.get_error_state()))
         print("tempc : " ,sensor2.get_temp_c())
         print("tempf : " ,sensor2.get_temp_f())
         print("humit : " ,sensor2.get_humidity())

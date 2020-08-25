@@ -39,7 +39,3 @@ def getTemp():
         F = (C * 9 / 5) + 32
         print("F  : ", F)
     return str(F)
-
-init_tempSensor()
-getTemp()
-disconnect()
