@@ -71,21 +71,6 @@ async def main_loop():
 
 if __name__ == '__main__':
     print("Starting          :  ", __file__)
-=======
-        print("Sensor: " ,sensor1.get_sensor_name())
-        print("Error : " ,str(sensor1.get_error_state()))
-        print("tempc : " ,sensor1.get_temp_c())
-        print("tempf : " ,sensor1.get_temp_f())
-        print("humit : " ,sensor1.get_humidity())
-        await process_sensor_2()
-        print("Sensor: " ,sensor2.get_sensor_name())
-        print("Error : " ,str(sensor2.get_error_state()))
-        print("tempc : " ,sensor2.get_temp_c())
-        print("tempf : " ,sensor2.get_temp_f())
-        print("humit : " ,sensor2.get_humidity())
-
-if __name__ == '__main__':
-    print("Starting File: ", __file__)
     asyncio.run(main_loop())
     
     

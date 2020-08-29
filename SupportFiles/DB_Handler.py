@@ -16,15 +16,9 @@ database_location = '/home/mario/EnvironmentController/readings.db'
 
 class DB_Manager:
     def __init__(self, db_name, sensor_name):
-<<<<<<< HEAD
         self.connection   = None
         self.cursor       = None
         self.sensor_table = None
-=======
-        self.connection = None
-        self.cursor     = None
-        self.sensor_table      = None
->>>>>>> c301f48e37fce9c2b3e4d5250c5da4698b836ac6
     
         if db_name:
             self.open(db_name)
@@ -109,17 +103,10 @@ def db_test():
     sensor2_name = DHT11.sensor2_config['name']
     sensor1_db = DB_Manager(database_location, sensor1_name)
     sensor2_db = DB_Manager(database_location, sensor2_name)
-<<<<<<< HEAD
     print("print table 1")
     sensor1_db.print_table()
     print("print table 2")
     sensor2_db.print_table()
-=======
-    # print("print table 1")
-    # sensor1_db.print_table()
-    # print("print table 2")
-    # sensor2_db.print_table()
->>>>>>> c301f48e37fce9c2b3e4d5250c5da4698b836ac6
     print(sensor1_db.get_last_row("*"))
     
 if __name__ == '__main__':

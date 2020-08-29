@@ -9,6 +9,8 @@ import os.path
 from os import path
 from configparser import ConfigParser
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 file = 'config.txt'
 
 default_config = {
@@ -19,6 +21,10 @@ default_config = {
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    MYT = 23
 
     
 # Example .ini file layout
@@ -36,7 +42,6 @@ def create_config_file():
     with open('config.ini', 'w') as f:
         config.write(f)
 
-
 def read_config_file():
     config = ConfigParser()
     config.read('config.ini')
@@ -48,6 +53,8 @@ def read_config_file():
 
     # getint() and getboolean() also do this for their respective types
     an_int = config.getint('main', 'an_int')
+
+
 
 
 def init_config():
