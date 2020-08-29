@@ -1,1 +1,2 @@
 FLASK_APP=TheWebApp.py
+FLASK_ENV=development

@@ -4,26 +4,21 @@
 # Description: Database functions
 ###############################################################################
 
-import sys
-sys.path.append('/home/mario/EnvironmentController/Sensors/')
 
+#!/usr/bin/python
 import sqlite3
 from sqlite3 import Error
 import random
-import DHT11
-
-database_location = '/home/mario/EnvironmentController/readings.db'
 
 class DB_Manager:
-    def __init__(self, db_name, sensor_name):
+    def __init__(self, config, sensor_num):
         self.connection   = None
         self.cursor       = None
         self.sensor_table = None
-    
-        if db_name:
-            self.open(db_name)
-            if sensor_name:
-                self.sensor_table = sensor_name + "_table"
+        if config.database_location:
+            self.open(config.database_location)
+            if config.sensor_configs[sensor_num]["name"]:
+                self.sensor_table = config.sensor_configs[sensor_num]["name"] + "_table"
                 self.create_table(self.sensor_table)
     
     def print_table(self):
@@ -99,8 +94,7 @@ class DB_Manager:
     
 def db_test():
     print(__file__, ": Testing")
-    sensor1_name = DHT11.sensor1_config['name']
-    sensor2_name = DHT11.sensor2_config['name']
+
     sensor1_db = DB_Manager(database_location, sensor1_name)
     sensor2_db = DB_Manager(database_location, sensor2_name)
     print("print table 1")

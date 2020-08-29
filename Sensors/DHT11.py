@@ -4,30 +4,37 @@
 # Description: Reads humidity sensor
 ###############################################################################
 
+#!/bin/bash
+
 import sys
 import time
 import Adafruit_DHT
 
-sensor1_config = {"name" : "upper_sensor", "data_pin":17}
-sensor2_config = {"name" : "lower_sensor", "data_pin":26}
-
-dht11_sensor_array = {}
-dht11_sensor_array[0] = sensor1_config
-dht11_sensor_array[1] = sensor2_config
-
 class Sensor:
+    sensor_index = 0
     def __init__(self, config):
-        self.sensor_type = 11
-        self.pin = config["data_pin"]
-        self.name = config["name"]
-        self.humidity = None
-        self.temperature_c = None
-        self.temperature_f = None
-        self.previous_c = None
-        self.previous_f = None
-        self.previous_h = None
-        self.sensor_error = False
-        self.process_sensor()
+        print("The Sensor Index is: ", self.sensor_index)
+        print("The Sensor Cnt is: ", config.sensor_cnt)
+        if config.sensor_cnt > self.sensor_index:
+            config.sensor_configs[self.sensor_index]["assigned"] =  True
+            self.pin = config.sensor_configs[self.sensor_index]["data_pin"]
+            self.name = config.sensor_configs[self.sensor_index]["name"]
+            self.sensor_type = config.sensor_configs[self.sensor_index]["sensor_type"]
+            self.humidity = None
+            self.temperature_c = None
+            self.temperature_f = None
+            self.previous_c = None
+            self.previous_f = None
+            self.previous_h = None
+            self.sensor_error = False
+            self.sensor_index += 1
+            print("Sensor Started")
+        else:
+            print("Error: All Sensors Used")
+        
+    def __del__(self): 
+        pass
+        #sensor_index -= 1
         
     def process_sensor(self):
         print("Processing        :", self.name)
@@ -64,36 +71,3 @@ class Sensor:
     def get_humidity(self):
         return self.humidity
 #end: class Sensor:
-
-def get_dht11_configs():
-    return dht11_sensor_array
-
-def sensor_test():
-    print("DHT11.py: Sensor Test")
-    
-    config_array = get_dht11_configs()
-    sensor1_config = config_array[0]
-    sensor2_config = config_array[1]
-    sensor1 = Sensor(sensor1_config)
-    sensor2 = Sensor(sensor2_config)
-    
-    while True:
-        sensor1.process_sensor()
-        sensor2.process_sensor()
-        print("Sensor: " ,sensor1.get_sensor_name())
-        print("Error : " ,str(sensor1.get_error_state()))
-        print("tempc : " ,sensor1.get_temp_c())
-        print("tempf : " ,sensor1.get_temp_f())
-        print("humit : " ,sensor1.get_humidity())
-        print("Sensor: " ,sensor2.get_sensor_name())
-        print("Error : " ,str(sensor2.get_error_state()))
-        print("tempc : " ,sensor2.get_temp_c())
-        print("tempf : " ,sensor2.get_temp_f())
-        print("humit : " ,sensor2.get_humidity())
-        time.sleep(3)
-    
-    
-if __name__ == '__main__':
-    sensor_test() 
-    
-    
