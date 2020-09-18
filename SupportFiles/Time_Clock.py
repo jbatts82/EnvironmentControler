@@ -28,16 +28,17 @@ class OS_Clock:
         now = datetime.datetime.now().strftime("%H:%M:%S")
         now = str(now)
         return(now)
-    
-    
-def time_clock_test():
-    print("Time_Clock.py: time_clock_test Test")
-    the_clock = OS_Clock()
-    
-    for x in range(9):
-        print("OS Delta Time: ", the_clock.get_time_since_start())
-        print("OS Time      : ", the_clock.get_current_time_stamp())
-        time.sleep(1)
-         
-if __name__ == '__main__':
-    time_clock_test() 
+        
+    def fan_timer(self):
+        time_now = datetime.datetime.now().time()
+        if time_now > datetime.time(22):
+            return True
+        else:
+            return False
+           
+        
+        
+        # this_morning = datetime.datetime(2009, 12, 2, 9, 30)
+        # last_night = datetime.datetime(2009, 12, 1, 20, 0)
+        # this_morning.time() < last_night.time()
+        # today8am = now.replace(hour=8, minute=0, second=0, microsecond=0)

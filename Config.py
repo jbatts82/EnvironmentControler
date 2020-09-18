@@ -30,12 +30,12 @@ class Config(object):
         self.init_file()
 
     def init_file(self):
-        print("Processing        : Config file")
+        print("Processing         : Config file")
         if path.exists(self.CONFIG_FILE):
             self.config = fh.get_from_file(self.CONFIG_FILE)
         else:
             self.config = fh.create_file(self.CONFIG_FILE)
-        print("Success Processing: Config file")
+        print("Success Processing : Config file")
         
     def get_config_file(self):
         self.update_config()
@@ -54,13 +54,3 @@ class Config(object):
                 remove_new_line = line[:-1]
                 out_list.append(remove_new_line)
         return out_list
-
-def config_test():
-    print(__file__, ": Testing!!!!!!!")
-    the_configuration = Config()
-    the_configuration.get_config_file()
-    print(the_configuration.MAX_TEMP_THRESH)
-
-
-if __name__ == "__main__":
-    config_test()

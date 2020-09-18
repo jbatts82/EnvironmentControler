@@ -12,7 +12,7 @@ class Light:
     def __init__(self):
         self.name = "Mars Hydro LED x 2"
         self.state = False
-        self.previous_s =  False
+        self.previous_s = False
         self.Process_Light()
         
     def Turn_On(self):
@@ -30,47 +30,15 @@ class Light:
         return self.state
 
     def Process_Light(self):
-        print("Processing        :", self.name)
+        print("Processing         :", self.name)
         try: 
             self.state = Plug.get_plug2_state()
             self.previous_s = self.state
         except: 
-            print("SIGNAL SNA        :", self.name)
+            print("SIGNAL SNA         :", self.name)
             self.state = self.previous_s
         else:
-            print("Success Processing:", self.name)
+            print("Success Processing :", self.name)
             self.previous_s = self.state
         finally:
             pass
-
-
-def light_test():
-    print("Light.py: Light Test")   
-    Plug.init_plug()
-    light = Light()
-    num = 0
-    light.Turn_On()
-    while True:
-        num = not num
-        if num:
-            light.Turn_On()
-        else:
-            light.Turn_Off()
-        light.Process_Light()
-        print("Light Name        : " , light.Get_Name())
-        print("Light State       : " , light.Get_State())
-        sleep(5)
-
-
-if __name__ == '__main__':
-    try:
-        light_test()
-    except:
-        print("System Error")
-    finally:
-        pass
-
-
-
-
-

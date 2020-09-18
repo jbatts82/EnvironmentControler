@@ -33,30 +33,3 @@ class Heater:
         self.relay1.Turn_Off()
         self.state = True
         print("Heater Off")
-        
-def heater_test():
-    print("Heater.py: Heater Test")   
-    num = 0
-    while True:
-        num = not num
-        print("Heater Name : ", heater.Get_Name())
-        if num:
-            heater.Turn_On()
-        else:
-            heater.Turn_Off()
-        print("Heater State: ", heater.Get_State())
-        sleep(5)
-
-
-
-if __name__ == '__main__':
-    try:
-        heater = Heater()
-        heater_test()
-    except:
-        heater.Turn_Off()
-        print("Heater Off")
-    finally:
-        pass
-
-    
