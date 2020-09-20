@@ -8,6 +8,7 @@
 
 import sys
 sys.path.append('..')
+sys.path.append('/home/mario/EnvironmentController/')
 from SupportFiles.DB_Handler import DB_Manager
 from SupportFiles.Time_Clock import OS_Clock
 import schedule
@@ -18,6 +19,7 @@ from Temperature import Temperature
 from Heater import Heater
 from Fan import Fan
 from Light import Light
+import Leds
 
 
 def Task_Init():
@@ -103,7 +105,7 @@ def Task_Environment_Control():
     
     
             
-            
+    Leds.toggle_control_led()
     print("*******************************************************************************")
 
 
@@ -125,6 +127,7 @@ try:
         sleep(1)
 except:
     print("System Error")
+    print("Unexpected error:", sys.exc_info()[0])
 finally:
     the_heater.Kill()
     print("bye..bye")
