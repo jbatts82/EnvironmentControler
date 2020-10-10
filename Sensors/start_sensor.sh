@@ -1,4 +1,4 @@
 #!/bin/bash
+echo "****Starting SensorApp****"
+sudo python3 /home/mario/EnvironmentController/Sensors/SensorApp.py
 
-
-/usr/bin/python3 -m /home/mario/EnvironmentController/Sensors/SensorApp.py

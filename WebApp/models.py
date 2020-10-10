@@ -26,12 +26,10 @@ class Post(db.Model):
         return '<Post {}>'.format(self.body)
         
         
-        
-        
-class Sensor(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(16))
+# class Sensor(db.Model):
+    # id = db.Column(db.Integer, primary_key=True)
+    # name = db.Column(db.String(16))
     
-class Sensor_Reading(db.Model):
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+# class Sensor_Reading(db.Model):
+    # timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     

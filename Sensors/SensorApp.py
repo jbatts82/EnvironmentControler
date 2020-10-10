@@ -17,7 +17,7 @@ import asyncio
 from datetime import datetime
 import time as t
 from config import Config
-
+from Control import Leds
 
 async def init_sensors():
     global sensor1_db, sensor2_db
@@ -26,6 +26,7 @@ async def init_sensors():
     await init_sensor_2(config)
     sensor1_db = DB_Sensor(config, 0)
     sensor2_db = DB_Sensor(config, 1)
+    
     
 async def init_sensor_1(config):
     global sensor1
@@ -54,19 +55,25 @@ async def process_sensor_2():
     humidity = sensor2.get_humidity()
     sensor2_db.write_sensor_data(time, temp, humidity)
     t.sleep(30)
+    
+async def process_status_led():
+    Leds.toggle_sensor_led()
+    t.sleep(1)
 
 async def main_loop():
     await init_sensors()
-    
     while True:
+        await process_status_led()
         await process_sensor_1()
         print("Error             : " ,str(sensor1.get_error_state()))
         print("Temperature       : " ,sensor1.get_temp_f())
         print("Humidity          : " ,sensor1.get_humidity())
+        await process_status_led()
         await process_sensor_2()
         print("Error             : " ,str(sensor2.get_error_state()))
         print("Temperature       : " ,sensor2.get_temp_f())
         print("Humidity          : " ,sensor2.get_humidity())
+        
 
 if __name__ == '__main__':
     print("Starting          :  ", __file__)

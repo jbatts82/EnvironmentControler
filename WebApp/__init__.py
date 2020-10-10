@@ -1,7 +1,8 @@
 ###############################################################################
 # File Name  : __init__.py
 # Date       : 08/24/2020
-# Description: Package
+# Description: Init the Package
+#            : the package is called WebApp, the app variable is app
 ###############################################################################
 
 from flask import Flask

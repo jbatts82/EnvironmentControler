@@ -8,6 +8,11 @@
 
 import sys
 sys.path.append('..')
+sys.path.append('/home/mario/EnvironmentController/')
+
+# with open('control_output.txt', 'w') as f:
+    # sys.stdout = f # Change the standard output to the file we created.
+
 from SupportFiles.DB_Handler import DB_Manager
 from SupportFiles.Time_Clock import OS_Clock
 import schedule
@@ -18,6 +23,7 @@ from Temperature import Temperature
 from Heater import Heater
 from Fan import Fan
 from Light import Light
+import Leds
 
 
 def Task_Init():
@@ -88,26 +94,34 @@ def Task_Environment_Control():
         fan_override = "True"
 
 
-    if fan_override == "True":
-        the_fan.Turn_On()
+    if avg_temp <= 70:
+        the_heater.Turn_On()
     else:
-        if avg_temp < temp_threshold:
-            the_fan.Turn_Off()
-            if avg_humidity > 59:
-                the_heater.Turn_On()
-            else:
-                the_heater.Turn_Off()
-        else:
-            the_heater.Turn_Off()
-            the_fan.Turn_On()
+        the_heater.Turn_Off()
+
+
+
+    # if fan_override == "True":
+        # the_fan.Turn_On()
+    # else:
+        # if avg_temp < temp_threshold:
+            # the_fan.Turn_Off()
+            # if avg_humidity > 59:
+                # the_heater.Turn_On()
+            # else:
+                # the_heater.Turn_Off()
+        # else:
+            # the_heater.Turn_Off()
+            # the_fan.Turn_On()
     
     
-            
-            
+    print("ALgo")       
+    Leds.toggle_control_led()
     print("*******************************************************************************")
 
 
-    
+def toggle_air_system():
+    pass
 
 
 def system_info_dump():
@@ -116,6 +130,8 @@ def system_info_dump():
 schedule.every().minute.at(":20").do(Task_Process_1)
 schedule.every().minute.at(":40").do(Task_Process_2)
 schedule.every().minute.at(":59").do(Task_Environment_Control)
+schedule.every(1).minutes.do(toggle_air_system)
+
 
 Task_Init()
 
@@ -125,6 +141,7 @@ try:
         sleep(1)
 except:
     print("System Error")
+    print("Unexpected error:", sys.exc_info()[0])
 finally:
     the_heater.Kill()
     print("bye..bye")
