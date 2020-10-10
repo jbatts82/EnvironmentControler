@@ -10,8 +10,10 @@ import sys
 sys.path.append('..')
 sys.path.append('/home/mario/EnvironmentController/')
 
+
 # with open('control_output.txt', 'w') as f:
     # sys.stdout = f # Change the standard output to the file we created.
+
 
 from SupportFiles.DB_Handler import DB_Manager
 from SupportFiles.Time_Clock import OS_Clock
@@ -115,7 +117,8 @@ def Task_Environment_Control():
             # the_fan.Turn_On()
     
     
-    print("ALgo")       
+
+
     Leds.toggle_control_led()
     print("*******************************************************************************")
 

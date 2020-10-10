@@ -4,6 +4,7 @@
 # Description: Displays sensor output to web page.
 ###############################################################################
 
+
 # import datetime
 # import sys
 # sys.path.append('/home/mario/EnvironmentController/SupportFiles/')
@@ -26,8 +27,10 @@
       # 'temp_1' : temp_1,
       # 'hum' : humidity,
     # }
+
       
     # return render_template('index.html', **templateData)
+
 
 
 
@@ -39,6 +42,7 @@
     # #sensor2_db = DB_Manager(database_location, sensor2_name)
     # #print(sensor1_db.get_last_row("*"))
     # app.run(debug=True, host='0.0.0.0')
+
     
     
     
