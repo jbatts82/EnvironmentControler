@@ -24,12 +24,15 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
-        
-        
-# class Sensor(db.Model):
-    # id = db.Column(db.Integer, primary_key=True)
-    # name = db.Column(db.String(16))
     
-# class Sensor_Reading(db.Model):
-    # timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+class Sensor_Reading(db.Model):
+    time_stamp = db.Column(db.DateTime, primary_key=True, index=True, default=datetime.utcnow)
+    temp_f = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    humidity = 
+    
+
+    
+    
+    
+    
     

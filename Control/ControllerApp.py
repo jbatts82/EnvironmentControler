@@ -9,12 +9,6 @@
 import sys
 sys.path.append('..')
 sys.path.append('/home/mario/EnvironmentController/')
-
-
-# with open('control_output.txt', 'w') as f:
-    # sys.stdout = f # Change the standard output to the file we created.
-
-
 from SupportFiles.DB_Handler import DB_Manager
 from SupportFiles.Time_Clock import OS_Clock
 import schedule
@@ -26,7 +20,6 @@ from Heater import Heater
 from Fan import Fan
 from Light import Light
 import Leds
-
 
 def Task_Init():
     print("*******************************************************************************")
@@ -64,8 +57,10 @@ def Task_Environment_Control():
     the_config.get_config_file()
     avg_temp = the_temperature.get_average_temperature()
     avg_humidity = the_humidity.get_average_humidity()
-    temp_threshold = float(the_config.MAX_TEMP_THRESH)
-    humid_threshold = float(the_config.MAX_HUMIDITY_THRESH)
+    max_temp_threshold = float(the_config.MAX_TEMP_THRESH)
+    min_temp_threshold = float(the_config.MIN_TEMP_THRESH)
+    max_humid_threshold = float(the_config.MAX_HUMIDITY_THRESH)
+    min_humid_threshold = float(the_config.MIN_HUMIDITY_THRESH)
     fan_override = the_config.FAN_OVERRIDE
     fan_state = the_fan.Get_State()
     max_humidity = the_humidity.get_max_humidity()
@@ -83,8 +78,10 @@ def Task_Environment_Control():
     print("Average Humidity   :", avg_humidity)
     print("Fan OverRide State :", fan_override)
     print("Fan Alarm State    :", fan_alarm)
-    print("Max Temp Thresh    :", temp_threshold)
-    print("Max Humidity Thresh:", humid_threshold)
+    print("Max Temp Thresh    :", max_temp_threshold)
+    print("Min Temp Thresh    :", min_temp_threshold)
+    print("Max Humidity Thresh:", max_humid_threshold)
+    print("Min Humidity Thresh:", min_humid_threshold)
     print("Max Humidity       :", max_humidity)
     print("Max Temperature    :", max_temperature)
     print("Heater State       :", heater_state)
@@ -95,30 +92,17 @@ def Task_Environment_Control():
     if fan_alarm:
         fan_override = "True"
 
-
-    if avg_temp <= 70:
+    if avg_temp <= max_temp_threshold:
         the_heater.Turn_On()
     else:
         the_heater.Turn_Off()
 
 
 
-    # if fan_override == "True":
-        # the_fan.Turn_On()
-    # else:
-        # if avg_temp < temp_threshold:
-            # the_fan.Turn_Off()
-            # if avg_humidity > 59:
-                # the_heater.Turn_On()
-            # else:
-                # the_heater.Turn_Off()
-        # else:
-            # the_heater.Turn_Off()
-            # the_fan.Turn_On()
-    
+
     
 
-
+    
     Leds.toggle_control_led()
     print("*******************************************************************************")
 

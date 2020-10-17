@@ -22,6 +22,7 @@ class Config(object):
     FAN_OVERRIDE = None
     MAX_TEMP_THRESH = 0
     MAX_HUMIDITY_THRESH = 0
+    database_location_og = '/home/mario/EnvironmentController/readings.db'
     database_location = '/home/mario/EnvironmentController/more_readings.db'
     sensor_cnt = 2
     sensor_configs = [{"name":"upper_sensor", "data_pin":17, "assigned":False, "sensor_type":11}, {"name":"lower_sensor", "data_pin":26, "assigned":False, "sensor_type":11}]
@@ -41,7 +42,10 @@ class Config(object):
         self.update_config()
         self.FAN_OVERRIDE = self.config[0]
         self.MAX_TEMP_THRESH = self.config[1]
-        self.MAX_HUMIDITY_THRESH = self.config[2]
+        self.MIN_TEMP_THRESH = self.config[2]
+        self.MAX_HUMIDITY_THRESH = self.config[3]
+        self.MIN_HUMIDITY_THRESH = self.config[4]
+        
     
     def update_config(self):
         self.config = fh.get_from_file(self.CONFIG_FILE)

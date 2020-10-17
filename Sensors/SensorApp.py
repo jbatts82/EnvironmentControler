@@ -27,7 +27,6 @@ async def init_sensors():
     sensor1_db = DB_Sensor(config, 0)
     sensor2_db = DB_Sensor(config, 1)
     
-    
 async def init_sensor_1(config):
     global sensor1
     sensor1 = DHT11.Sensor(config)

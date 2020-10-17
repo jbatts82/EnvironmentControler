@@ -7,14 +7,16 @@
 import sqlite3
 from sqlite3 import Error
 import random
+from config import Config
 
 class DB_Manager:
     def __init__(self, config=None):
         self.connection   = None
         self.cursor       = None
         if config:
-            if config.database_location:
-                self.open(config.database_location)
+            if config.database_location_og:
+                print(config.database_location_og)
+                self.open(config.database_location_og)
         else:
             print("Config Unavailable")
                 
