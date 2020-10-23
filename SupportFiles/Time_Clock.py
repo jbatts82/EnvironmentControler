@@ -10,6 +10,7 @@ import time
 class OS_Clock:
     def __init__(self):
         self.system_start_time = datetime.datetime.now()
+        self.fan_on_tmr = 0
   
     def get_time_since_start(self):
         delta_time = datetime.datetime.now() - self.system_start_time
@@ -28,16 +29,7 @@ class OS_Clock:
         now = datetime.datetime.now().strftime("%H:%M:%S")
         now = str(now)
         return(now)
-        
-    def fan_timer(self):
-        time_now = datetime.datetime.now().time()
-        if time_now > datetime.time(22):
-            return True
-        else:
-            return False
-           
-        
-        
+
         # this_morning = datetime.datetime(2009, 12, 2, 9, 30)
         # last_night = datetime.datetime(2009, 12, 1, 20, 0)
         # this_morning.time() < last_night.time()

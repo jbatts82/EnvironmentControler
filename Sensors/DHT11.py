@@ -40,7 +40,7 @@ class Sensor:
             self.humidity, self.temperature_c = Adafruit_DHT.read_retry(self.sensor_type, self.pin)
             self.temperature_f = self.temperature_c * 9/5.0 + 32
         except:
-            print("SIGNAL SNA        :",self.name)
+            print("!!!SIGNAL SNA!!!  :",self.name)
             self.temperature_c = self.previous_c
             self.temperature_f = self.previous_f
             self.humidity = self.previous_h
@@ -68,4 +68,5 @@ class Sensor:
         
     def get_humidity(self):
         return self.humidity
+        
 #end: class Sensor:

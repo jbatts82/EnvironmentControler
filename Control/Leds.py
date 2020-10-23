@@ -16,13 +16,14 @@ led2 = LED(6)
 led3 = LED(13)
 led4 = LED(19)
 
-
 def toggle_sensor_led():
-    print("toggle LED")
     led1.toggle()
 
 def toggle_control_led():
     led2.toggle()
+    
+def toggle_1s_led():
+    led3.toggle()
 
 
 

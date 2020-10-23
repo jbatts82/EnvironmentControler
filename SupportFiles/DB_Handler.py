@@ -7,14 +7,15 @@
 import sqlite3
 from sqlite3 import Error
 import random
+from config import Config
 
 class DB_Manager:
     def __init__(self, config=None):
         self.connection   = None
         self.cursor       = None
         if config:
-            if config.database_location:
-                self.open(config.database_location)
+            if config.database_location_og:
+                self.open(config.database_location_og)
         else:
             print("Config Unavailable")
                 
@@ -91,7 +92,7 @@ class DB_Sensor(DB_Manager):
         except sqlite3.Error as e:
             print('Error writing sensor data.')
         else:
-            print('Data Wrote to Table at: time')
+            print('Data Wrote to Table {}'.format(time_stamp))
             
     def get_last_humidity(self):
         return self.humidity 
