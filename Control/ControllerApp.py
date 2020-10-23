@@ -71,9 +71,10 @@ def Task_Environment_Control():
     # Get Sensor Readings
     avg_temp = the_temperature.get_average_temperature()
     intake_temp = the_temperature.get_temperature1()
-    avg_humidity = the_humidity.get_average_humidity()
     lower_temp = the_temperature.get_temperature2()
-    
+    avg_humidity = the_humidity.get_average_humidity()
+    fan_override = the_config.FAN_OVERRIDE
+    fan_state = the_fan.Get_State()
     max_humidity = the_humidity.get_max_humidity()
     max_temperature = the_temperature.get_max_temperature()
     
@@ -132,19 +133,37 @@ def Task_Environment_Control():
     print("Config File")
     print("Fan OverRide State :", fan_override)
     print("Hum OverRide State :", hum_override)
+    print("Fan Alarm State    :", fan_alarm)
     print("Max Temp Thresh    :", max_temp_threshold)
     print("Min Temp Thresh    :", min_temp_threshold)
     print("Max Humidity Thresh:", max_humid_threshold)
     print("Min Humidity Thresh:", min_humid_threshold)
     print("*******************************************************************************")
     print("Device States")
+    print("Max Humidity       :", max_humidity)
+    print("Max Temperature    :", max_temperature)
     print("Heater State       :", heater_state)
     print("Humidifier State   :", humidifier_state)
     print("Fan State          :", fan_state)
     print("LED Light State    :", light_state)
+
+    
+
+    if fan_alarm:
+        fan_override = "True"
+
+    if avg_temp <= max_temp_threshold:
+        the_heater.Turn_On()
+    else:
+        the_heater.Turn_Off()
+
+
+
+
     
 
     
+
     Leds.toggle_control_led()
     print("*******************************************************************************")
 
