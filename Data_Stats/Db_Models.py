@@ -28,4 +28,3 @@ from datetime import datetime
     # timestamp = db.Column('Timestamp', db.DateTime)
     # value_type = db.Column('ValueType', db.Integer)
     # value = db.Column('Value', db.Float)
-
