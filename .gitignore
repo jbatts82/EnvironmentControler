@@ -15,3 +15,6 @@ test.txt
 *.pyc
 *.db
 *.db
+*.db
+readings.db
+*.db

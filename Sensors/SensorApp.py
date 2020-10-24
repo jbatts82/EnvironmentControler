@@ -64,14 +64,14 @@ async def main_loop():
     while True:
         await process_status_led()
         await process_sensor_1()
-        print("Error             : " ,str(sensor1.get_error_state()))
-        print("Temperature       : " ,sensor1.get_temp_f())
-        print("Humidity          : " ,sensor1.get_humidity())
+        print("Error             :" ,str(sensor1.get_error_state()))
+        print("Temperature       :" ,sensor1.get_temp_f())
+        print("Humidity          :" ,sensor1.get_humidity())
         await process_status_led()
         await process_sensor_2()
-        print("Error             : " ,str(sensor2.get_error_state()))
-        print("Temperature       : " ,sensor2.get_temp_f())
-        print("Humidity          : " ,sensor2.get_humidity())
+        print("Error             :" ,str(sensor2.get_error_state()))
+        print("Temperature       :" ,sensor2.get_temp_f())
+        print("Humidity          :" ,sensor2.get_humidity())
         
 
 if __name__ == '__main__':
