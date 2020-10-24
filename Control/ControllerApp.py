@@ -128,12 +128,10 @@ def Task_Environment_Control():
     print("Lower Temp         :", lower_temp) 
     print("Max Humidity Seen  :", max_humidity)
     print("Max Temp Seen      :", max_temperature)
-    #print("Fan Alarm State    :", fan_alarm)
     print("*******************************************************************************")
     print("Config File")
     print("Fan OverRide State :", fan_override)
     print("Hum OverRide State :", hum_override)
-    print("Fan Alarm State    :", fan_alarm)
     print("Max Temp Thresh    :", max_temp_threshold)
     print("Min Temp Thresh    :", min_temp_threshold)
     print("Max Humidity Thresh:", max_humid_threshold)
@@ -149,19 +147,30 @@ def Task_Environment_Control():
 
     
 
-    if fan_alarm:
-        fan_override = "True"
 
-    if avg_temp <= max_temp_threshold:
+
+    # Set Outputs
+    if avg_humidity <= min_humid_threshold:
+        the_humidifier.Turn_On()
+    else:
+        the_humidifier.Turn_Off()
+
+    if avg_temp <= min_temp_threshold:
         the_heater.Turn_On()
     else:
         the_heater.Turn_Off()
 
 
-
-
-    
-
+    # Over rides
+    if fan_override == "True":
+        the_fan.Turn_On()
+    else:
+        the_fan.Turn_Off()
+        
+    # if hum_override == "True":
+        # the_humidifier.Turn_On()
+    # else:
+        # the_humidifier.Turn_Off()
     
 
     Leds.toggle_control_led()
