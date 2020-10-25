@@ -6,3 +6,11 @@
 #               Also provides stats. 
 ###############################################################################
 
+class DataStats:
+    def __init__(self):
+    	self.init_data_stats()
+
+    def init_data_stats(self):
+    	print("Initalizing Data Stats")
+
+
