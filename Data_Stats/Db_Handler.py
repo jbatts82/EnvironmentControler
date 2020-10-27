@@ -9,6 +9,18 @@ from sqlite3 import Error
 import random
 from config import Config
 
+
+
+
+
+
+
+
+
+
+
+
+
 class DB_Manager:
     def __init__(self, config=None):
         self.connection   = None
