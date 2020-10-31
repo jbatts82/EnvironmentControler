@@ -7,11 +7,21 @@
 ###############################################################################
 
 
-class DataStats:
-    def __init__(self):
-    	self.db_init()
+from SupportFiles.Shared import DHT11_Data
 
-    def db_init(self):
-    	print("hello from db_intn")
+current_sensor_data = DHT11_Data()
 
-    
+def write_sensor_data():
+	print("Writing Sensor Data")
+
+def read_last_sensor_record():
+	return
+
+
+
+
+
+    	
+
+
+
