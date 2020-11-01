@@ -24,6 +24,7 @@ class Config(object):
     MAX_HUMIDITY_THRESH = 0
     database_location_og = '/home/mario/EnvironmentController/readings.db'
     database_location = '/home/mario/EnvironmentController/more_readings.db'
+    database_loc = '/db_test.db'
     sensor_cnt = 2
     sensor_configs = [{"name":"upper_sensor", "data_pin":17, "assigned":False, "sensor_type":11}, {"name":"lower_sensor", "data_pin":26, "assigned":False, "sensor_type":11}]
     
@@ -36,7 +37,7 @@ class Config(object):
             self.config = fh.get_from_file(self.CONFIG_FILE)
         else:
             self.config = fh.create_file(self.CONFIG_FILE)
-        print("Success Processing : Config file")
+        print("Success Processing : Config Object Created")
         
     def get_config_file(self):
         self.update_config()

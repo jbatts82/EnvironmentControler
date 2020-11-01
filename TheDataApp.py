@@ -4,16 +4,24 @@
 # Description: 
 ###############################################################################
 
+from config import Config
+from Data_Stats.DataApp import Ds_App
+from SupportFiles.Shared import DHT11_Data
 
-from Data_Stats import DataApp
-
-
+from datetime import datetime
 
 
 
 if __name__ == '__main__':
-	print("Starting          :  ", __file__)
-	DataApp.write_sensor_data()
+	print("Starting           :", __file__)
+
+	the_config = Config()
+
+	the_data_app = Ds_App(the_config)
+
+	some_sensor_data = DHT11_Data("sensor1", datetime.now(), 32.2, 66.6)
+
+	the_data_app.write_sensor_data(some_sensor_data)
 
 
 	# sensor_data1 = DHT11_Data()

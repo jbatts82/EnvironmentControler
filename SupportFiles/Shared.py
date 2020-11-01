@@ -8,8 +8,6 @@ from datetime import datetime
 from sqlalchemy import Table, Column, Integer, String, DateTime, Float
 
 
-
-
 class DHT11_Data:
     def __init__(self, name=False, time_data=0, humidity=0, temperature_f=0):
         self.name = name
@@ -25,5 +23,10 @@ class DHT11_Data:
 
 
 
+# def print_this(input1, input2):
+#     output_string = '''{}{:<20}{}'''.format(input1, input2)
+#     print(output_string)
 
+#     #print("Starting File: ", __file__)
 
+# print_this("Stadfrting", "File")
