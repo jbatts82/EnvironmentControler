@@ -5,8 +5,6 @@
 ###############################################################################
 
 from datetime import datetime
-from sqlalchemy import Table, Column, Integer, String, DateTime, Float
-
 
 class DHT11_Data:
     def __init__(self, name=False, time_data=0, humidity=0, temperature_f=0):

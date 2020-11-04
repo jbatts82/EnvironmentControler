@@ -6,23 +6,39 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Table, Column, Integer, String, DateTime, Float
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import MetaData
 from datetime import datetime
-from Data_Stats.Db_Models import Reading
+
+
+
+base = declarative_base()
+
+class Reading(base):
+    __tablename__ = 'Readings'
+    time_stamp = Column('TimeDate', DateTime, primary_key=True, index=True)
+    sensor = Column('Sensor', String(20))
+    temperature = Column('Temperature', Float)
+    humidity = Column('Humidity', Float)
+
 
 class Ds_Manager:
     def __init__(self, config=None):
         if config:
             database_temp = config.database_loc
+            database_loc = "sqlite://{}".format(database_temp)
         else:
             print("Config Unavailable")
-
-        self.database_loc = "sqlite://{}".format(database_temp)
-        self.engine = create_engine(self.database_loc, echo=True) #db address
-        self.base = declarative_base()
+            database_loc = None
+        self.engine = create_engine(database_loc, echo=False) #db address
+        base.metadata.create_all(self.engine)
         self.session = sessionmaker(bind=self.engine)
+        self.the_session = self.session()
+
         self.meta = MetaData()
+        if not self.engine.dialect.has_table(self.engine, Reading.__tablename__): #if table doesn't exist
+            self.meta.create_all(self.engine)
 
 
 class Ds_Sensor(Ds_Manager):
@@ -35,10 +51,36 @@ class Ds_Sensor(Ds_Manager):
         print(reading.sensor)
         print(reading.temperature)
         print(reading.humidity)
-        # now actually write to databae
+        self.the_session.add(reading) #adds a model to database
+        self.the_session.add(reading) #adds a model to database
+        self.the_session.commit()
+        self.get_table()
+
+    def get_table(self):
+        query = self.the_session.query(Reading).all()
+        #self.dump_table(query)
+        return query
+
+    def dump_table(self, query):
+        print("Dumping Table") 
+        for each in query:
+            print(each.humidity)
+            print(each.time_stamp)
+            print(each.sensor)
+            print(each.temperature)
+            print(each.humidity)
 
 if __name__ == '__main__':
     print("Starting File: ", __file__)
+
+
+    db_sensor = Ds_Sensor()
+
+
+
+
+
+
     #if not engine.dialect.has_table(engine, Reading.__tablename__): #if table doesn't exist
     # meta.create_all(engine)
     # reading = Reading(time_stamp=datetime.now(), sensor='upper_sensor',temperature=78.5, humidity=51.2)
