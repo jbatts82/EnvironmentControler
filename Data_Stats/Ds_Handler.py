@@ -45,20 +45,21 @@ class Ds_Sensor(Ds_Manager):
     def __init__(self, config=None):
         super().__init__(config)
 
-    def write_to_sensor_table(self, reading):
+    def insert_record(self, reading):
         print("Writing to Database...")
-        print(reading.time_stamp)
-        print(reading.sensor)
-        print(reading.temperature)
-        print(reading.humidity)
-        self.the_session.add(reading) #adds a model to database
         self.the_session.add(reading) #adds a model to database
         self.the_session.commit()
-        self.get_table()
+        
+    def get_last_sensor_rec(self):
+        query = self.the_session.query(Reading).first()
+        print(query.time_stamp)
+        return query
+
+    def get_last_sensor_rec_from(self, time):
+        pass
 
     def get_table(self):
         query = self.the_session.query(Reading).all()
-        #self.dump_table(query)
         return query
 
     def dump_table(self, query):

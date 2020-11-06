@@ -7,7 +7,6 @@
 from config import Config
 from Data_Stats.DataApp import Ds_App
 from SupportFiles.Shared import DHT11_Data
-
 from datetime import datetime
 import random
 
@@ -17,8 +16,8 @@ if __name__ == '__main__':
 
 	the_config = Config()
 
+	
 	the_data_app = Ds_App(the_config)
-
 
 	for x in range(10):
 		some_sensor_data = DHT11_Data("sensor1", datetime.now(),
@@ -27,12 +26,22 @@ if __name__ == '__main__':
 
 		the_data_app.write_sensor_data(some_sensor_data)
 
-	query = the_data_app.read_last_sensor_record()
+	query = the_data_app.get_last_sensor_reading()
 
-	for each in query:
-		print("Query NUmber:", each)
-		print(each.humidity)
-		print(each.time_stamp)
-		print(each.sensor)
-		print(each.temperature)
-		print(each.humidity)
+
+
+
+	print("Query Number:", query)
+	print(query.humidity)
+	print(query.time_data)
+	print(query.name)
+	print(query.temperature_f)
+	print(query.humidity)
+
+	# for each in query:
+	# 	print("Query NUmber:", each)
+	# 	print(each.humidity)
+	# 	print(each.time_stamp)
+	# 	print(each.sensor)
+	# 	print(each.temperature)
+	# 	print(each.humidity)
