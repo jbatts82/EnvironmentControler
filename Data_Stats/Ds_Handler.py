@@ -11,8 +11,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import MetaData
 from datetime import datetime
 
-
-
 base = declarative_base()
 
 class Reading(base):
@@ -21,7 +19,6 @@ class Reading(base):
     sensor = Column('Sensor', String(20))
     temperature = Column('Temperature', Float)
     humidity = Column('Humidity', Float)
-
 
 class Ds_Manager:
     def __init__(self, config=None):
@@ -49,6 +46,7 @@ class Ds_Sensor(Ds_Manager):
         print("Writing to Database...")
         self.the_session.add(reading) #adds a model to database
         self.the_session.commit()
+        print("Sucessful Write to Database...")
         
     def get_last_sensor_rec(self):
         query = self.the_session.query(Reading).first()
@@ -56,8 +54,8 @@ class Ds_Sensor(Ds_Manager):
         return query
 
     def get_last_sensor_rec_from(self, sensor_num):
+        print("getting last insert_record")
         #query = self.the_session.query(Reading).
-
 
     def get_table(self):
         query = self.the_session.query(Reading).all()
