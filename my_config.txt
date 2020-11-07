@@ -1,4 +1,4 @@
-True
+False
 False
 80.0
 70.0

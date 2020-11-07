@@ -1,9 +1,12 @@
 ###############################################################################
-# Filename    : Test.py
-# Date        : 10/25/2020 
-# Description : Test Platform
+# File Name  : TheSensorApp.py
+# Date       : 11/07/2020
+# Description: 
 ###############################################################################
 
-from DataApp import DataStats
 
-data_stats = DataStats()
+if __name__ == '__main__':
+	print("Starting           :", __file__)
+
+
+	

@@ -18,13 +18,3 @@ class DHT11_Data:
         print(self.time_data)
         print(self.humidity)
         print(self.temperature_f)
-
-
-
-# def print_this(input1, input2):
-#     output_string = '''{}{:<20}{}'''.format(input1, input2)
-#     print(output_string)
-
-#     #print("Starting File: ", __file__)
-
-# print_this("Stadfrting", "File")
