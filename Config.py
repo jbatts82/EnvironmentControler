@@ -8,7 +8,7 @@ import os
 import os.path
 from os import path
 from configparser import ConfigParser
-from SupportFiles import File_Handler as fh
+import SupportFiles.File_Handler as fh
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
@@ -48,6 +48,7 @@ class Config(object):
     def get_config_file(self):
         self.update_config()
         self.FAN_OVERRIDE = self.config[0]
+        self.FAN_OVER_STATE = True
         self.HUM_OVERRIDE = self.config[1]
         self.MAX_TEMP_THRESH = self.config[2]
         self.MIN_TEMP_THRESH = self.config[3]

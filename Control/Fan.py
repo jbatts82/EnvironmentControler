@@ -5,7 +5,7 @@
 ###############################################################################
 
 from time import sleep
-import Plug
+import Control.Plug as Plug
 
 class Fan:
     def __init__(self):

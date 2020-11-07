@@ -43,6 +43,12 @@ class Ds_App:
 
 		return sensor_data
 
+	def get_last_avg_room_temp(self):
+		sensor1_temp = self.get_last_temp(0)
+		sensor2_temp = self.get_last_temp(1)
+		avg_temp = (sensor1_temp + sensor2_temp) / 2
+		return avg_temp
+
 	def get_last_temp(self, sensor_num):
 		print("Last Temperature Reading From: ", str(sensor_num))
 
