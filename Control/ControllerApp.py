@@ -181,8 +181,6 @@ def toggle_air_system():
     print("Set Exhaust on for 3 minutes")
 
 
-
-
 def timer_tracker():
     print("timer tracker")
     

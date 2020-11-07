@@ -55,6 +55,6 @@ class Ds_App:
 	def get_rolling_avg_humid(self, sensor_num):
 		print("Rolling Avg Humidity From: ", str(sensor_num))
 
-
+	
 
 #end class Ds_App

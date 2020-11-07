@@ -55,8 +55,9 @@ class Ds_Sensor(Ds_Manager):
         print(query.time_stamp)
         return query
 
-    def get_last_sensor_rec_from(self, time):
-        pass
+    def get_last_sensor_rec_from(self, sensor_num):
+        #query = self.the_session.query(Reading).
+
 
     def get_table(self):
         query = self.the_session.query(Reading).all()
