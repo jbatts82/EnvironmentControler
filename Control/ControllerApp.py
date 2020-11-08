@@ -10,6 +10,7 @@ from Control.Humidifier import Humidifier
 from Control.Fan import Fan
 from Control.Light import Light
 import Control.Leds
+from Data_Stats.DataApp import Ds_App
 
 
 import sys
@@ -17,13 +18,14 @@ import schedule
 from time import sleep
 
 def Initialize_Control(config):
-    global the_time, the_heater, the_humidifier, the_fan, the_light, the_config
+    global the_time, the_heater, the_humidifier, the_fan, the_light, the_config, data_app
     the_config = config
     the_time = OS_Clock()
     the_heater = Heater()
     the_humidifier = Humidifier()
     the_fan = Fan()
     the_light = Light()
+    data_app = Ds_App(config)
     print("Control Objects Initialized")
 
 def Task_Process_1():
@@ -54,11 +56,32 @@ def Task_Environment_Control():
     on_time = the_time.get_time_since_start()
 
     # Get Sensor Readings
-    # avg_humidity
-    # intake_temp
-    # lower_temp
-    # max_humidity
-    # max_temperature
+    avg_temp = data_app.get_last_avg_room_temp()
+    avg_humidity = data_app.get_last_avg_room_humid()
+    intake_temp = data_app.get_last_temp("upper_sensor")
+    lower_temp = data_app.get_last_temp("lower_sensor")
+
+
+    # Set Outputs
+    if avg_humidity <= min_humid_threshold:
+        the_humidifier.Turn_On()
+    else:
+        the_humidifier.Turn_Off()
+
+    if avg_temp <= min_temp_threshold:
+        the_heater.Turn_On()
+    else:
+        the_heater.Turn_Off()
+
+
+    # Over rides
+
+    if fan_override == "True":
+        if fan_override_state == "True":
+            the_fan.Turn_On()
+        else:
+            the_fan.Turn_Off()
+
 
     # Get Updated States
     heater_state = the_heater.Get_State()
@@ -74,10 +97,10 @@ def Task_Environment_Control():
     print("System On Time     :", on_time)
     print("*******************************************************************************")
     print("System Stats")
-    # print("Average Temp       :", avg_temp)
-    # print("Average Humidity   :", avg_humidity)
-    # print("Intake Temp        :", intake_temp)
-    # print("Lower Temp         :", lower_temp) 
+    print("Average Temp       :", avg_temp)
+    print("Average Humidity   :", avg_humidity)
+    print("Intake Temp        :", intake_temp)
+    print("Lower Temp         :", lower_temp) 
     # print("Max Humidity Seen  :", max_humidity)
     # print("Max Temp Seen      :", max_temperature)
     print("*******************************************************************************")
@@ -95,32 +118,6 @@ def Task_Environment_Control():
     print("Fan State          :", fan_state)
     print("LED Light State    :", light_state)
 
-    
-
-
-
-    # Set Outputs
-    # if avg_humidity <= min_humid_threshold:
-    #     the_humidifier.Turn_On()
-    # else:
-    #     the_humidifier.Turn_Off()
-
-    # if avg_temp <= min_temp_threshold:
-    #     the_heater.Turn_On()
-    # else:
-    #     the_heater.Turn_Off()
-
-
-    # Over rides
-
-    if fan_override == "True":
-        if fan_override_state == "True":
-            the_fan.Turn_On()
-        else:
-            the_fan.Turn_Off()
-
-    
-    
     Control.Leds.toggle_control_led()
     print("*******************************************************************************")
 
@@ -135,19 +132,18 @@ def timer_tracker():
 
 
 
-#schedule.every(1).minutes.do(timer_tracker)
-#schedule.every(2).minutes.do(toggle_air_system)
-#schedule.every().day.at("12:25").do(job)
+
 
 def Run_Tasks():
-
-
     schedule.every().minute.at(":00").do(Task_Environment_Control)
     schedule.every().minute.at(":10").do(the_fan.Process_Fan)
     schedule.every().minute.at(":40").do(the_light.Process_Light)
     schedule.every().minute.at(":15").do(Task_Environment_Control)
     schedule.every().minute.at(":30").do(Task_Environment_Control)
     schedule.every().minute.at(":45").do(Task_Environment_Control)
+    # schedule.every(1).minutes.do(timer_tracker)
+    # schedule.every(2).minutes.do(toggle_air_system)
+    # schedule.every().day.at("12:25").do(job)
 
     try:
         while True: #run forever

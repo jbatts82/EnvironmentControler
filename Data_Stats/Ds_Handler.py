@@ -20,6 +20,10 @@ class Reading(base):
     temperature = Column('Temperature', Float)
     humidity = Column('Humidity', Float)
 
+
+
+
+###############################################################################
 class Ds_Manager:
     def __init__(self, config=None):
         if config:
@@ -37,38 +41,52 @@ class Ds_Manager:
         if not self.engine.dialect.has_table(self.engine, Reading.__tablename__): #if table doesn't exist
             self.meta.create_all(self.engine)
 
-
 class Ds_Sensor(Ds_Manager):
     def __init__(self, config=None):
         super().__init__(config)
 
     def insert_record(self, reading):
         print("Writing to Database...")
-        self.the_session.add(reading) #adds a model to database
+        self.the_session.add(reading)
         self.the_session.commit()
         print("Sucessful Write to Database...")
         
     def get_last_sensor_rec(self):
-        query = self.the_session.query(Reading).first()
-        print(query.time_stamp)
-        return query
+        query = self.the_session.query(Reading).order_by(Reading.time_stamp.desc())
+        last_record = query.first()
+        return last_record
 
-    def get_last_sensor_rec_from(self, sensor_num):
-        print("getting last insert_record")
-        #query = self.the_session.query(Reading).
+    def get_last_sensor_rec_from(self, sensor_name):
+        query = self.the_session.query(Reading).filter(Reading.sensor == sensor_name).order_by(Reading.time_stamp.desc()).all()
+        last_record = query[0]
+        return last_record
 
     def get_table(self):
         query = self.the_session.query(Reading).all()
         return query
 
+    def view_query_dict(self, a_query):
+        print("Printing Each Record Dictionary")
+        for each_record in a_query:
+            print(each_record.__dict__)
+
     def dump_table(self, query):
         print("Dumping Table") 
         for each in query:
-            print(each.humidity)
-            print(each.time_stamp)
-            print(each.sensor)
-            print(each.temperature)
-            print(each.humidity)
+            print("Humidity:", each.humidity)
+            print("Time: ", each.time_stamp)
+            print("Sensor: ", each.sensor)
+            print("Temperature: ", each.temperature)
+            print("Humidity: ", each.humidity)
+
+
+    # Untested
+
+# end class Ds_Sensor(Ds_Manager):
+###############################################################################
+
+
+
 
 if __name__ == '__main__':
     print("Starting File: ", __file__)
@@ -102,3 +120,21 @@ if __name__ == '__main__':
     # 	print(Reading.temperature)
     # 	print(Reading.humidity)
     print("Later World")
+
+'''
+Example SQL ALchemy
+
+# sql where equilavent example
+# in Customer where first name == Carl
+records = session.query(Customer).filter(Customer.first_name == 'Carl').all()
+
+# gets all records with first name starting with J
+records = session.query(Customer).filter(Customer.first_name.like('J%')).all()
+
+
+
+
+
+
+
+'''

@@ -35,6 +35,10 @@ class DHT11:
         try:
             humidity, temperature_c = Adafruit_DHT.read_retry(self.sensor_type, self.pin)
             temperature_f = temperature_c * 9/5.0 + 32
+            print("Sensor         : {}".format(self.name))
+            print("The Temperature: {}".format(str(temperature_f)))
+            print("The Humidity   : {}".format(str(humidity)))
+
             self.current_data.time_data = datetime.now()
             self.current_data.temperature_f = temperature_f
             self.current_data.humidity = humidity
