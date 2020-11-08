@@ -18,7 +18,6 @@ class Ds_App:
 	
 	def write_sensor_data(self, some_sensor_data):
 		# accept sensor context data and format it for database context
-		print("Writing Sensor Data")
 		self.current_sensor_data = some_sensor_data
 		# convert sensor data to database data
 		reading = Reading()

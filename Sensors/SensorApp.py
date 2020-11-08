@@ -4,6 +4,8 @@
 # Description : This app runs continuously collecting sensor data and writing 
 #               to a database. 
 ###############################################################################
+
+
 import asyncio
 from datetime import datetime
 from Sensors.DHT11 import DHT11
@@ -12,10 +14,11 @@ from config import Config
 from Control import Leds
 import time as t
 
+
 config = Config()
 
+
 async def init_sensors():
-    print("Init Sensors")
     await init_sensor_1(config)
     await init_sensor_2(config)
     
@@ -29,20 +32,15 @@ async def init_sensor_2(config):
 
 async def process_sensor_1():
     global sensor1
-    # read sensor
     sensor1.process_sensor()
-    # get new data
     sensor_data = sensor1.get_current_data()
-    # write to database
     database = Ds_App(config)
     database.write_sensor_data(sensor_data)
     
 async def process_sensor_2():
     global sensor2
     sensor2.process_sensor()
-    # get new data
     sensor_data = sensor2.get_current_data()
-    # write to database
     database = Ds_App(config)
     database.write_sensor_data(sensor_data)
     
