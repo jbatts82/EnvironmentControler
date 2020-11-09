@@ -8,7 +8,7 @@ import os
 import os.path
 from os import path
 from configparser import ConfigParser
-from SupportFiles import File_Handler as fh
+import SupportFiles.File_Handler as fh
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
@@ -17,13 +17,20 @@ class Config(object):
     'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MYT = 23
+
+    # external configs
     CONFIG_FILE = '/home/mario/EnvironmentController/my_config.txt'
-    db_name = 'readings.db'
     FAN_OVERRIDE = None
     MAX_TEMP_THRESH = 0
     MAX_HUMIDITY_THRESH = 0
+
+    # Data base Configurations
     database_location_og = '/home/mario/EnvironmentController/readings.db'
     database_location = '/home/mario/EnvironmentController/more_readings.db'
+    database_loc = '/db_test.db'
+    db_name = 'readings.db'
+
+    # Sensor Configurations
     sensor_cnt = 2
     sensor_configs = [{"name":"upper_sensor", "data_pin":17, "assigned":False, "sensor_type":11}, {"name":"lower_sensor", "data_pin":26, "assigned":False, "sensor_type":11}]
     
@@ -36,17 +43,17 @@ class Config(object):
             self.config = fh.get_from_file(self.CONFIG_FILE)
         else:
             self.config = fh.create_file(self.CONFIG_FILE)
-        print("Success Processing : Config file")
+        print("Success Processing : Config Object Created")
         
     def get_config_file(self):
         self.update_config()
         self.FAN_OVERRIDE = self.config[0]
+        self.FAN_OVER_STATE = True
         self.HUM_OVERRIDE = self.config[1]
         self.MAX_TEMP_THRESH = self.config[2]
         self.MIN_TEMP_THRESH = self.config[3]
         self.MAX_HUMIDITY_THRESH = self.config[4]
         self.MIN_HUMIDITY_THRESH = self.config[5]
-        
     
     def update_config(self):
         self.config = fh.get_from_file(self.CONFIG_FILE)

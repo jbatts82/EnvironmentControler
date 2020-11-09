@@ -4,15 +4,15 @@
 # Description: Heater Controls
 ###############################################################################
 
-import Songle
 from time import sleep
-from Songle import Relay
+from Control.Songle import Relay
+import Control.Songle
 
 class Heater:
     def __init__(self):
         self.name = "Space Heater"
         self.state = False
-        self.relay_configs = Songle.get_relay_configs()
+        self.relay_configs = Control.Songle.get_relay_configs()
         self.relay1 = Relay(self.relay_configs[0])
 
     def Turn_On(self):

@@ -1,4 +1,3 @@
-
 ###############################################################################
 # Filename    : SensorApp.py
 # Date        : 08/22/2020 
@@ -6,54 +5,44 @@
 #               to a database. 
 ###############################################################################
 
-import os
-import sys
-sys.path.append(os.path.abspath("/home/mario/EnvironmentController/"))
-sys.path.append(os.path.abspath("/home/mario/EnvironmentController/SupportFiles"))
-from DB_Handler import DB_Sensor
-import DHT11
-import Max6675K
+
 import asyncio
 from datetime import datetime
-import time as t
+from Sensors.DHT11 import DHT11
+from Data_Stats.DataApp import Ds_App
 from config import Config
 from Control import Leds
+import time as t
+
+
+config = Config()
+
 
 async def init_sensors():
-    global sensor1_db, sensor2_db
-    config = Config()
     await init_sensor_1(config)
     await init_sensor_2(config)
-    sensor1_db = DB_Sensor(config, 0)
-    sensor2_db = DB_Sensor(config, 1)
     
 async def init_sensor_1(config):
     global sensor1
-    sensor1 = DHT11.Sensor(config)
+    sensor1 = DHT11(config)
 
 async def init_sensor_2(config):
     global sensor2
-    sensor2 = DHT11.Sensor(config)
+    sensor2 = DHT11(config)
 
 async def process_sensor_1():
-    global sensor_1
+    global sensor1
     sensor1.process_sensor()
-    error_state = sensor1.get_error_state()
-    time = datetime.now()
-    temp = sensor1.get_temp_f()
-    humidity = sensor1.get_humidity()
-    sensor1_db.write_sensor_data(time, temp, humidity)
-    t.sleep(30)
+    sensor_data = sensor1.get_current_data()
+    database = Ds_App(config)
+    database.write_sensor_data(sensor_data)
     
 async def process_sensor_2():
-    global sensor_2
+    global sensor2
     sensor2.process_sensor()
-    error_state = sensor2.get_error_state()
-    time = datetime.now()
-    temp = sensor2.get_temp_f()
-    humidity = sensor2.get_humidity()
-    sensor2_db.write_sensor_data(time, temp, humidity)
-    t.sleep(30)
+    sensor_data = sensor2.get_current_data()
+    database = Ds_App(config)
+    database.write_sensor_data(sensor_data)
     
 async def process_status_led():
     Leds.toggle_sensor_led()
@@ -64,19 +53,14 @@ async def main_loop():
     while True:
         await process_status_led()
         await process_sensor_1()
-        print("Error             :" ,str(sensor1.get_error_state()))
-        print("Temperature       :" ,sensor1.get_temp_f())
-        print("Humidity          :" ,sensor1.get_humidity())
+        t.sleep(30)
         await process_status_led()
         await process_sensor_2()
-        print("Error             :" ,str(sensor2.get_error_state()))
-        print("Temperature       :" ,sensor2.get_temp_f())
-        print("Humidity          :" ,sensor2.get_humidity())
-        
+        t.sleep(30)
 
-if __name__ == '__main__':
-    print("Starting          :  ", __file__)
-    asyncio.run(main_loop())
+# if __name__ == '__main__':
+#     print("Starting          :  ", __file__)
+#     asyncio.run(main_loop())
     
     
     

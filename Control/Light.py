@@ -5,7 +5,7 @@
 ###############################################################################
 
 
-import Plug
+import Control.Plug as Plug
 from time import sleep
 
 class Light:
