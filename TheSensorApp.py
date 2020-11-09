@@ -1,12 +1,17 @@
 ###############################################################################
-# File Name  : TheWebApp.py
-# Date       : 08/24/2020
-# Description: configuration 
+# File Name  : TheSensorApp.py
+# Date       : 11/07/2020
+# Description: 
 ###############################################################################
 
-from WebApp import app
+
+import asyncio
+import Sensors.SensorApp as sa
+
 
 if __name__ == '__main__':
 	print("Starting           :", __file__)
-    app.run(host='0.0.0.0')
-    
+	asyncio.run(sa.main_loop())
+
+
+

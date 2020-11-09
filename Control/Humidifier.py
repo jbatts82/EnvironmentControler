@@ -4,15 +4,14 @@
 # Description: Humdifier Controls. Adds humidity.
 ###############################################################################
 
-import Songle
 from time import sleep
-from Songle import Relay
-
+from Control.Songle import Relay
+import Control.Songle
 class Humidifier:
     def __init__(self):
         self.name = "Humidifier"
         self.state = False
-        self.relay_configs = Songle.get_relay_configs()
+        self.relay_configs = Control.Songle.get_relay_configs()
         self.relay1 = Relay(self.relay_configs[1])
 
     def Turn_On(self):

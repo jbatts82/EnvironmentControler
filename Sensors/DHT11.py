@@ -4,13 +4,13 @@
 # Description: Reads humidity sensor
 ###############################################################################
 
-#!/bin/bash
-
 import sys
 import time
+from datetime import datetime
 import Adafruit_DHT
+from SupportFiles.Shared import DHT11_Data
 
-class Sensor:
+class DHT11:
     sensor_index = 0
     def __init__(self, config):
         if config.sensor_cnt > self.sensor_index:
@@ -18,55 +18,45 @@ class Sensor:
             self.pin = config.sensor_configs[self.sensor_index]["data_pin"]
             self.name = config.sensor_configs[self.sensor_index]["name"]
             self.sensor_type = config.sensor_configs[self.sensor_index]["sensor_type"]
-            self.humidity = 999
-            self.temperature_c = 999
-            self.temperature_f = 999
-            self.previous_c = 999
-            self.previous_f = 999
-            self.previous_h = 999
-            self.sensor_error = False
-            Sensor.sensor_index += 1
+            self.current_data = DHT11_Data()
+            self.previous_data = DHT11_Data() #ie:previous good data
+            self.current_data.name = config.sensor_configs[self.sensor_index]["name"]
+            DHT11.sensor_index += 1
             self.process_sensor()
-            print("Sensor Started")
+            print("Success Processing : Sensor Started Successfully")
         else:
-            print("Error: All Sensors Used")
+            print("Error              : All Sensors Used or some other error")
         
     def __del__(self): 
         pass
         
     def process_sensor(self):
-        print("Processing        :", self.name)
+        print("Processing         :", self.name)
         try:
-            self.humidity, self.temperature_c = Adafruit_DHT.read_retry(self.sensor_type, self.pin)
-            self.temperature_f = self.temperature_c * 9/5.0 + 32
+            humidity, temperature_c = Adafruit_DHT.read_retry(self.sensor_type, self.pin)
+            temperature_f = temperature_c * 9/5.0 + 32
+            # print("Sensor         : {}".format(self.name))
+            # print("The Temperature: {}".format(str(temperature_f)))
+            # print("The Humidity   : {}".format(str(humidity)))
+
+            self.current_data.time_data = datetime.now()
+            self.current_data.temperature_f = temperature_f
+            self.current_data.humidity = humidity
+            self.current_data.error_state = False
         except:
-            print("!!!SIGNAL SNA!!!  :",self.name)
-            self.temperature_c = self.previous_c
-            self.temperature_f = self.previous_f
-            self.humidity = self.previous_h
-            self.sensor_error = True
+            print("!!!SIGNAL SNA!!!   :",self.name)
+            self.current_data = self.previous_data
         else:
-            print("Success Processing:", self.name)
-            self.previous_c = self.temperature_c 
-            self.previous_f = self.temperature_f 
-            self.previous_h = self.humidity
-            self.sensor_error = False
+            print("Success Processing :", self.name)
+            # print("Time              :", self.current_data.time_data)
+            # print("Temp              :", self.current_data.temperature_f)
+            # print("Humidity          :", self.current_data.humidity)
+            # print("Time              :", self.current_data.error_state)
+            self.previous_data = self.current_data
         finally:
             pass
     
-    def get_error_state(self):
-        return self.sensor_error
-    
-    def get_sensor_name(self):
-        return self.name
-    
-    def get_temp_c(self):
-        return self.temperature_c
-        
-    def get_temp_f(self):
-        return self.temperature_f
-        
-    def get_humidity(self):
-        return self.humidity
-        
+    def get_current_data(self):
+        return self.current_data
+
 #end: class Sensor:
