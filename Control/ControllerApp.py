@@ -42,7 +42,9 @@ def Task_Environment_Control():
     print("Processing         : Environmental Controls")
     
     # Get Configuration Parameters
+
     the_config.get_config_file()
+
     fan_override = the_config.FAN_OVERRIDE
     fan_override_state = the_config.FAN_OVER_STATE
     hum_override = the_config.HUM_OVERRIDE
@@ -50,6 +52,7 @@ def Task_Environment_Control():
     min_temp_threshold = float(the_config.MIN_TEMP_THRESH)
     max_humid_threshold = float(the_config.MAX_HUMIDITY_THRESH)
     min_humid_threshold = float(the_config.MIN_HUMIDITY_THRESH)
+    
     
     # Get Time
     current_time = the_time.get_current_time_stamp()
