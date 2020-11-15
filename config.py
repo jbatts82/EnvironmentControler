@@ -19,12 +19,13 @@ class Config(object):
     MYT = 23
 
     # external configs
-    CONFIG_FILE = '/home/mario/EnvironmentController/my_config.txt'
+    CONFIG_FILE = 'my_config.txt'
     FAN_OVERRIDE = None
     MAX_TEMP_THRESH = 0
     MAX_HUMIDITY_THRESH = 0
 
-    # Data base Configurations
+    # Data base Configurations, 
+    # relative database needs /
     database_loc = '/db_test.db'
 
     # Sensor Configurations
