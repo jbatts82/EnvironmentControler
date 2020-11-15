@@ -33,10 +33,10 @@ class Ds_Manager:
             print("Config Unavailable")
             database_loc = None
         self.engine = create_engine(database_loc, echo=False) #db address
+        print("Connected to       :", database_loc)
         base.metadata.create_all(self.engine)
         self.session = sessionmaker(bind=self.engine)
         self.the_session = self.session()
-
         self.meta = MetaData()
         if not self.engine.dialect.has_table(self.engine, Reading.__tablename__): #if table doesn't exist
             self.meta.create_all(self.engine)
@@ -79,6 +79,9 @@ class Ds_Sensor(Ds_Manager):
             print("Temperature: ", each.temperature)
             print("Humidity: ", each.humidity)
 
+    def get_recs_from_time(mins):
+        query = self.the_session.query(Reading)
+        
 
     # Untested
 
@@ -93,10 +96,6 @@ if __name__ == '__main__':
 
 
     db_sensor = Ds_Sensor()
-
-
-
-
 
 
     #if not engine.dialect.has_table(engine, Reading.__tablename__): #if table doesn't exist
