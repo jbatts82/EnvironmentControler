@@ -20,9 +20,6 @@ class Config(object):
 
     # external configs
     CONFIG_FILE = 'my_config.txt'
-    FAN_OVERRIDE = None
-    MAX_TEMP_THRESH = 0
-    MAX_HUMIDITY_THRESH = 0
 
     # Data base Configurations, 
     # relative database needs /
