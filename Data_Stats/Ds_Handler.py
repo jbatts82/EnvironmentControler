@@ -46,10 +46,10 @@ class Ds_Sensor(Ds_Manager):
         super().__init__(config)
 
     def insert_record(self, reading):
-        print("Processing         : Writing Record to Database...",)
+        print("Processing         : Writing Record to Database...")
         self.the_session.add(reading)
         self.the_session.commit()
-        print("Success            : Write Complete", )
+        print("Success            : Write Complete")
         
     def get_last_sensor_rec(self):
         query = self.the_session.query(Reading).order_by(Reading.time_stamp.desc())
