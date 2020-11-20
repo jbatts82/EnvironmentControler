@@ -5,15 +5,21 @@
 ###############################################################################
 
 import datetime
+from datetime import timedelta
 import time
+import logging
+
+import numpy as np
+import pandas as pd
 
 class OS_Clock:
+    system_start_time = datetime.datetime.now()
+
     def __init__(self):
-        self.system_start_time = datetime.datetime.now()
-        self.fan_on_tmr = 0
-  
+        print("Init Clock")
+
     def get_time_since_start(self):
-        delta_time = datetime.datetime.now() - self.system_start_time
+        delta_time = datetime.datetime.now() - OS_Clock.system_start_time
         return delta_time
   
     def get_current_time_stamp(self):
@@ -34,3 +40,38 @@ class OS_Clock:
         # last_night = datetime.datetime(2009, 12, 1, 20, 0)
         # this_morning.time() < last_night.time()
         # today8am = now.replace(hour=8, minute=0, second=0, microsecond=0)
+
+class Device_Clock:
+    def __init__(self):
+        print("Init Clock")
+        self.clock_start_time = datetime.datetime.now()
+        self.turn_off_t_stamp = self.clock_start_time
+        self.timer_state = False
+
+    def process_clock(self):
+        time_now = datetime.datetime.now()
+        off_time = self.turn_off_t_stamp
+        
+        if time_now >= off_time:
+            self.timer_state = False
+
+        return self.timer_state
+
+    def set_on_timer(self, length_min):
+        time_now = datetime.datetime.now()
+        self.turn_off_t_stamp = time_now + timedelta(minutes = length_min)
+        self.timer_state = True
+
+
+
+if __name__ == '__main__':
+    print("Starting File: ", __file__)
+    device_clock = Device_Clock()
+
+    print("Timer Status: {}".format(device_clock.timer_state))
+    device_clock.set_on_timer(1)
+    while True:
+        device_clock.process_clock()
+        print("Timer Status: {}".format(device_clock.timer_state))
+        time.sleep(1)
+
