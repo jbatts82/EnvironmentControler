@@ -14,8 +14,8 @@ class DB_Manager:
         self.connection   = None
         self.cursor       = None
         if config:
-            if config.database_location_og:
-                self.open(config.database_location_og)
+            if config.database_loc:
+                self.open(config.database_loc)
         else:
             print("Config Unavailable")
                 

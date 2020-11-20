@@ -6,13 +6,14 @@
 
 from time import sleep
 import Control.Plug as Plug
+from SupportFiles.Time_Clock import Device_Clock
 
 class Fan:
     def __init__(self):
         self.name = "Exhaust Fan"
         self.state = False
         self.previous_state = False
-        self.fan_on_tmr = 0
+        self.device_clock = Device_Clock()
         self.Process_Fan()
         
     def Turn_On(self):
@@ -27,12 +28,17 @@ class Fan:
     def Get_State(self):
         return self.state
 
-    def Set_Fan_Timer(time_min):
-        self.fan_on_tmr = time_min
+    def Set_Fan_Timer(self, time_min):
+        self.device_clock.set_on_timer(time_min)
+        self.Turn_On()
         
     def Process_Fan(self):
         print("Processing         :", self.name)
         try: 
+            timer_state = self.device_clock.process_clock()
+            if timer_state == False:
+                self.Turn_Off()
+
             self.state = Plug.get_plug1_state()
         except: 
             print("SIGNAL SNA         :", self.name)

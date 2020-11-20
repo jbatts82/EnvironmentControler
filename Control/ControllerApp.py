@@ -4,14 +4,15 @@
 # Description: Main controller of system
 ###############################################################################
 
-from SupportFiles.Time_Clock import OS_Clock
+from SupportFiles.Time_Clock import OS_Clock, Device_Clock
 from Control.Heater import Heater
 from Control.Humidifier import Humidifier
 from Control.Fan import Fan
 from Control.Light import Light
 import Control.Leds
 from Data_Stats.DataApp import Ds_App
-
+import numpy as np
+import pandas as pd 
 
 import sys
 import schedule
@@ -42,9 +43,7 @@ def Task_Environment_Control():
     print("Processing         : Environmental Controls")
     
     # Get Configuration Parameters
-
     the_config.get_config_file()
-
     fan_override = the_config.FAN_OVERRIDE
     fan_override_state = the_config.FAN_OVER_STATE
     hum_override = the_config.HUM_OVERRIDE
@@ -52,7 +51,6 @@ def Task_Environment_Control():
     min_temp_threshold = float(the_config.MIN_TEMP_THRESH)
     max_humid_threshold = float(the_config.MAX_HUMIDITY_THRESH)
     min_humid_threshold = float(the_config.MIN_HUMIDITY_THRESH)
-    
     
     # Get Time
     current_time = the_time.get_current_time_stamp()
@@ -64,21 +62,25 @@ def Task_Environment_Control():
     intake_temp = data_app.get_last_temp("upper_sensor")
     lower_temp = data_app.get_last_temp("lower_sensor")
 
-
     # Set Outputs
-    if avg_humidity <= min_humid_threshold:
-        the_humidifier.Turn_On()
+    fan_state = the_fan.Get_State()
+
+    if fan_state == False:
+        if avg_humidity <= min_humid_threshold:
+            the_humidifier.Turn_On()
+        else:
+            the_humidifier.Turn_Off()
+
+        if avg_temp <= min_temp_threshold:
+            the_heater.Turn_On()
+        else:
+            the_heater.Turn_Off()
     else:
         the_humidifier.Turn_Off()
-
-    if avg_temp <= min_temp_threshold:
-        the_heater.Turn_On()
-    else:
         the_heater.Turn_Off()
 
 
-    # Over rides
-
+    # Over-rides
     if fan_override == "True":
         if fan_override_state == "True":
             the_fan.Turn_On()
@@ -124,29 +126,24 @@ def Task_Environment_Control():
     Control.Leds.toggle_control_led()
     print("*******************************************************************************")
 
-
 def toggle_air_system():
-    print("Set Exhaust on for 3 minutes")
-
-
-def timer_tracker():
-    print("timer tracker")
-    
-
-
-
-
+    print("Set Exhaust on for 5 minutes")
+    the_fan.Set_Fan_Timer(5)
 
 def Run_Tasks():
     schedule.every().minute.at(":00").do(Task_Environment_Control)
-    schedule.every().minute.at(":10").do(the_fan.Process_Fan)
-    schedule.every().minute.at(":40").do(the_light.Process_Light)
     schedule.every().minute.at(":15").do(Task_Environment_Control)
     schedule.every().minute.at(":30").do(Task_Environment_Control)
     schedule.every().minute.at(":45").do(Task_Environment_Control)
-    # schedule.every(1).minutes.do(timer_tracker)
-    # schedule.every(2).minutes.do(toggle_air_system)
-    # schedule.every().day.at("12:25").do(job)
+
+    schedule.every().minute.at(":10").do(the_fan.Process_Fan)
+    schedule.every().minute.at(":40").do(the_light.Process_Light)
+
+    schedule.every().day.at("00:23").do(toggle_air_system)
+    schedule.every().day.at("6:23").do(toggle_air_system)
+    schedule.every().day.at("12:23").do(toggle_air_system)
+    schedule.every().day.at("18:23").do(toggle_air_system)
+
 
     try:
         while True: #run forever
@@ -156,6 +153,7 @@ def Run_Tasks():
     except:
         print("System Error")
         print("Unexpected error:", sys.exc_info()[0])
+        raise
     finally:
         the_heater.Kill()
         print("bye..bye")

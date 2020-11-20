@@ -10,6 +10,9 @@ from sqlalchemy import Table, Column, Integer, String, DateTime, Float
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import MetaData
 from datetime import datetime
+from datetime import timedelta
+
+
 
 base = declarative_base()
 
@@ -33,10 +36,10 @@ class Ds_Manager:
             print("Config Unavailable")
             database_loc = None
         self.engine = create_engine(database_loc, echo=False) #db address
+        print("Connected to       :", database_loc)
         base.metadata.create_all(self.engine)
         self.session = sessionmaker(bind=self.engine)
         self.the_session = self.session()
-
         self.meta = MetaData()
         if not self.engine.dialect.has_table(self.engine, Reading.__tablename__): #if table doesn't exist
             self.meta.create_all(self.engine)
@@ -46,10 +49,10 @@ class Ds_Sensor(Ds_Manager):
         super().__init__(config)
 
     def insert_record(self, reading):
-        print("Processing         : Writing Record to Database...",)
+        print("Processing         : Writing Record to Database...")
         self.the_session.add(reading)
         self.the_session.commit()
-        print("Success            : Write Complete", )
+        print("Success            : Write Complete")
         
     def get_last_sensor_rec(self):
         query = self.the_session.query(Reading).order_by(Reading.time_stamp.desc())
@@ -70,17 +73,26 @@ class Ds_Sensor(Ds_Manager):
         for each_record in a_query:
             print(each_record.__dict__)
 
-    def dump_table(self, query):
+    def dump_table(self):
         print("Dumping Table") 
-        for each in query:
-            print("Humidity:", each.humidity)
-            print("Time: ", each.time_stamp)
-            print("Sensor: ", each.sensor)
+        table = self.get_table()
+        for each in table:
+            print("Sensor     : ", each.sensor)
+            print("Time       : ", each.time_stamp)
             print("Temperature: ", each.temperature)
-            print("Humidity: ", each.humidity)
+            print("Humidity   : ", each.humidity)
 
+    def get_last_recs_time(self, mins):
+        last_record = self.get_last_sensor_rec()
+        last_time_stamp = last_record.time_stamp
+        past_time_stamp = last_time_stamp - timedelta(minutes = mins)
+        query = self.the_session.query(Reading).filter(Reading.time_stamp >= past_time_stamp).all()
+        return query
 
     # Untested
+       
+
+
 
 # end class Ds_Sensor(Ds_Manager):
 ###############################################################################
@@ -90,13 +102,9 @@ class Ds_Sensor(Ds_Manager):
 
 if __name__ == '__main__':
     print("Starting File: ", __file__)
+    the_config = Config()
 
-
-    db_sensor = Ds_Sensor()
-
-
-
-
+    db_sensor = Ds_Sensor(the_config)
 
 
     #if not engine.dialect.has_table(engine, Reading.__tablename__): #if table doesn't exist

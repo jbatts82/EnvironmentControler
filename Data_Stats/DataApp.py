@@ -60,13 +60,37 @@ class Ds_App:
 		avg_humid = (sensor1_temp + sensor2_temp) / 2
 		return avg_humid
 
-	# untested
+	def dump_sensor_records(self):
+		self.data_base.dump_table()
 
-	def get_rolling_avg_temp(self, sensor_num):
-		print("Rolling Avg Temperature From: ", str(sensor_num))
+	def print_record(self, record):
+		print("Sensor Name: {}".format(record.sensor))
+		print("Time       : {}".format(record.time_stamp))
+		print("Temperature: {}".format(record.temperature))
+		print("Humidity   : {}".format(record.humidity))
+		print("")
 
-	def get_rolling_avg_humid(self, sensor_num):
-		print("Rolling Avg Humidity From: ", str(sensor_num))
+    # Untested
+
+	def get_rolling_avg_temp(self, sensor_name):
+		print("Rolling Avg Temperature From: ", sensor_name)
+
+		data = self.data_base.get_last_recs_time(5)
+		
+		count = 0
+		t_sum = 0
+
+		for record in data:
+			if record.sensor == sensor_name:
+				count = count + 1
+				t_sum = t_sum + record.temperature
+
+		rolling_average = t_sum / count
+
+		return rolling_average
+
+	def get_rolling_avg_humid(self, sensor_name):
+		print("Rolling Avg Humidity From: ", sensor_name)
 
 #end class Ds_App
 
