@@ -19,7 +19,7 @@ class Config(object):
     MYT = 23
 
     # external configs
-    CONFIG_FILE = 'my_config.txt'
+    CONFIG_FILE = '/home/mario/EnvironmentController/my_config.txt'
 
     # Data base Configurations, 
     # relative database needs /
