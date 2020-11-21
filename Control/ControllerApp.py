@@ -140,7 +140,7 @@ def Run_Tasks():
     schedule.every().minute.at(":40").do(the_light.Process_Light)
 
     schedule.every().day.at("00:23").do(toggle_air_system)
-    schedule.every().day.at("6:23").do(toggle_air_system)
+    schedule.every().day.at("06:23").do(toggle_air_system)
     schedule.every().day.at("12:23").do(toggle_air_system)
     schedule.every().day.at("18:23").do(toggle_air_system)
 

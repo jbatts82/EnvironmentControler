@@ -36,12 +36,6 @@
 
 # if __name__ == '__main__':
     # print("Starting File: ", __file__)
-    # #sensor1_name = DHT11.sensor1_config['name']
-    # #sensor2_name = DHT11.sensor2_config['name']
-    # #sensor1_db = DB_Manager(database_location, sensor1_name)
-    # #sensor2_db = DB_Manager(database_location, sensor2_name)
-    # #print(sensor1_db.get_last_row("*"))
-    # app.run(debug=True, host='0.0.0.0')
 
     
     
