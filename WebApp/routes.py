@@ -7,6 +7,7 @@
 from flask import render_template, flash, redirect, url_for
 from WebApp import app
 
+
 @app.route('/')
 @app.route('/index')
 def index():
