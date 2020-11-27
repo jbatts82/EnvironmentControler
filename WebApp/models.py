@@ -5,7 +5,14 @@
 ###############################################################################
 
 from datetime import datetime
-from WebApp import db
+
+
+
+class Sensor_Reading(db.Model):
+    time_stamp = db.Column(db.DateTime, primary_key=True, index=True, default=datetime.utcnow)
+    temp_f = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    humidity = 23
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -25,10 +32,7 @@ class Post(db.Model):
     def __repr__(self):
         return '<Post {}>'.format(self.body)
     
-class Sensor_Reading(db.Model):
-    time_stamp = db.Column(db.DateTime, primary_key=True, index=True, default=datetime.utcnow)
-    temp_f = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    humidity = 
+
     
 
     
