@@ -25,10 +25,10 @@ class Config(object):
     MAX_HUMIDITY_THRESH = 0
 
     # Data base Configurations
-    database_location_og = '/home/mario/EnvironmentController/readings.db'
-    database_location = '/home/mario/EnvironmentController/more_readings.db'
+    #database_location_og = '/home/mario/EnvironmentController/readings.db'
+    #database_loc = '/home/mario/EnvironmentController/db_test.db'
     database_loc = '/db_test.db'
-    db_name = 'readings.db'
+    #db_name = 'readings.db'
 
     # Sensor Configurations
     sensor_cnt = 2
