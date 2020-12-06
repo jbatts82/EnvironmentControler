@@ -127,8 +127,8 @@ def Task_Environment_Control():
     print("*******************************************************************************")
 
 def toggle_air_system():
-    print("Set Exhaust on for 5 minutes")
-    the_fan.Set_Fan_Timer(5)
+    print("Set Exhaust on for 7 minutes")
+    the_fan.Set_Fan_Timer(7)
 
 def Run_Tasks():
     schedule.every().minute.at(":00").do(Task_Environment_Control)
@@ -140,8 +140,11 @@ def Run_Tasks():
     schedule.every().minute.at(":40").do(the_light.Process_Light)
 
     schedule.every().day.at("00:23").do(toggle_air_system)
+    schedule.every().day.at("03:23").do(toggle_air_system)
     schedule.every().day.at("06:23").do(toggle_air_system)
+    schedule.every().day.at("09:23").do(toggle_air_system)
     schedule.every().day.at("12:23").do(toggle_air_system)
+    schedule.every().day.at("15:23").do(toggle_air_system)
     schedule.every().day.at("18:23").do(toggle_air_system)
 
 
