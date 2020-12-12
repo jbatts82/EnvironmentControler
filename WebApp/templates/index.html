@@ -4,5 +4,20 @@
     <h1>Hi, {{ user.username }}!</h1>
     {% for post in posts %}
     <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
+    <div></div>
     {% endfor %}
+
+    <b>Temperature</b> = {{data[0]}}</br>
+    <b>Humiditiy</b> = {{data[1]}}</br>
+    <b>Time</b> = {{data[2]}}</br>
+    <b>Sensor</b> = {{data[3]}}</br>
 {% endblock %}
+
+
+{% block plot %}
+	<h1>Plot</h1>
+	<img src="/plot.png" alt="my plot">
+{% endblock %}
+
+
+

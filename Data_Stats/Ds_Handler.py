@@ -3,7 +3,8 @@
 # Date       : 10/27/2020
 # Description: Database functions
 ###############################################################################
-
+import sys
+sys.path.append('/home/mario/EnvironmentController/')
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Table, Column, Integer, String, DateTime, Float

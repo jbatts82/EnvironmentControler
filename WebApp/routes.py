@@ -4,16 +4,27 @@
 # Description: Displays sensor output to web page.
 ###############################################################################
 
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, Flask, send_file, make_response, request, Response
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+import io
+import random
+import numpy as np
+
+
 from WebApp import app
-from WebApp.forms import LoginForm
+from Data_Stats.DataApp import Ds_App
+from WebApp import Config
+
 
 @app.route('/')
 @app.route('/index')
 def index():
-    user = {'username': 'John'}
-    _title = '**RPi Environment Controller!***'
-    posts = [
+    plot_png()
+    _user = {'username': 'John'}
+    _title = 'RPiii Environment Controller'
+    _posts = [
         {
             'author': {'username': 'John'},
             'body': 'Hello me, Its me again'
@@ -23,14 +34,24 @@ def index():
             'body': 'A credit to dementia'
         }
     ]
-    return render_template('index.html', title=_title, user=user, posts=posts)
+    config = Config()
+    data_app = Ds_App(config)
+    last_rec = data_app.get_last_sensor_reading()
+    _data = [last_rec.temperature_f, last_rec.humidity, last_rec.time_data, last_rec.name]
+    return render_template('index.html', title=_title, user=_user, posts=_posts, data=_data)
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        flash('Login requested for user {}, remember_me={}'.format(
-            form.username.data, form.remember_me.data))
-        return redirect(url_for('index'))
-    return render_template('login.html',  title='Sign In', form=form)
+@app.route('/plot.png')
+def plot_png():
+    fig = create_figure()
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+
+def create_figure():
+    fig = Figure()
+    axis = fig.add_subplot(1, 1, 1)
+    xs = [1, 2, 3]
+    ys = [3, 2, 1]
+    axis.plot(xs, ys)
+    return fig
