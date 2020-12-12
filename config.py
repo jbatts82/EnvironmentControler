@@ -29,6 +29,16 @@ class Config(object):
     sensor_cnt = 2
     sensor_configs = [{"name":"upper_sensor", "data_pin":17, "assigned":False, "sensor_type":11}, {"name":"lower_sensor", "data_pin":26, "assigned":False, "sensor_type":11}]
     
+
+    time_table = []
+    time_table.append({"hour":0, "name":'Late Night', "temp":68})
+    time_table.append({"hour":4, "name":'Early Morning', "temp":72})
+    time_table.append({"hour":8, "name":'Morning', "temp":74})
+    time_table.append({"hour":12, "name":'Noon', "temp":76})
+    time_table.append({"hour":16, "name":'Eve', "temp":73})
+    time_table.append({"hour":20, "name":'Night', "temp":70})
+
+
     def __init__(self):
         self.init_file()
 

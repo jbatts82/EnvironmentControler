@@ -43,7 +43,22 @@ def pandas_numpy_practice():
 	print("The rolling average is: {}".format(the_average))
 
 
+def time_of_day():
+	print("time_of_day")
+
+	the_config = Config()
+	time_table = the_config.time_table
+	date_time_now = datetime.now()
+	hour_now = date_time_now.hour
+	
+	for hour in time_table[::-1]:
+		if hour_now >= hour["hour"]:
+			break
+
+	return hour
+
+
 
 if __name__ == '__main__':
 	print("Starting           :", __file__)
-	pandas_numpy_practice()
+	time_of_day()
