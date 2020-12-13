@@ -13,14 +13,19 @@ import random
 import numpy as np
 
 
+from WebApp import forms
 from WebApp import app
 from Data_Stats.DataApp import Ds_App
 from WebApp import Config
 
 
 @app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/index')
+@app.route('/index', methods=['GET', 'POST'])
 def index():
+    print("Hello MMMEEE")
+    print("T!!!!!!!!he Request Method: {}".format(request.method))
     plot_png()
     _user = {'username': 'John'}
     _title = 'RPiii Environment Controller'
@@ -38,7 +43,15 @@ def index():
     data_app = Ds_App(config)
     last_rec = data_app.get_last_sensor_reading()
     _data = [last_rec.temperature_f, last_rec.humidity, last_rec.time_data, last_rec.name]
-    return render_template('index.html', title=_title, user=_user, posts=_posts, data=_data)
+
+    name_form = forms.NameForm()
+    if name_form.validate_on_submit():
+        name = name_form.name.data
+        print("The Name is: {}".format(name))
+
+
+
+    return render_template('index.html', title=_title, user=_user, posts=_posts, data=_data, form=name_form)
 
 
 @app.route('/plot.png')
