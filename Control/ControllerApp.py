@@ -18,6 +18,8 @@ import sys
 import schedule
 from time import sleep
 
+from datetime import datetime
+
 def Initialize_Control(config):
     global the_time, the_heater, the_humidifier, the_fan, the_light, the_config, data_app
     the_config = config
@@ -55,6 +57,10 @@ def Task_Environment_Control():
     # Get Time
     current_time = the_time.get_current_time_stamp()
     on_time = the_time.get_time_since_start()
+
+    temp_setting = get_temp_setting()
+    print("Processing         : Good {}".format(temp_setting['name']))
+    min_temp_threshold = temp_setting['temp']
 
     # Get Sensor Readings
     avg_temp = data_app.get_last_avg_room_temp()
@@ -129,6 +135,21 @@ def Task_Environment_Control():
 def toggle_air_system():
     print("Set Exhaust on for 7 minutes")
     the_fan.Set_Fan_Timer(7)
+
+def get_temp_setting():
+    time_table = the_config.time_table
+    date_time_now = datetime.now()
+    hour_now = date_time_now.hour
+    
+    for hour in time_table[::-1]:
+        if hour_now >= hour["hour"]:
+            break
+
+    temp_setting = hour
+
+    return temp_setting
+
+
 
 def Run_Tasks():
     schedule.every().minute.at(":00").do(Task_Environment_Control)
