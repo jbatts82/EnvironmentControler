@@ -26,7 +26,7 @@ from WebApp import Config
 def index():
     print("Hello MMMEEE")
     print("T!!!!!!!!he Request Method: {}".format(request.method))
-    plot_png()
+    
     _user = {'username': 'John'}
     _title = 'RPiii Environment Controller'
     _posts = [
@@ -50,21 +50,29 @@ def index():
         print("The Name is: {}".format(name))
 
 
+    readings = data_app.get_previous_readings_time(60)
+    global temp_arr, time_arr
+    temp_arr = []
+    time_arr = []
+    for reading in readings:
+        temp_arr.append(reading.temperature)
+        time_arr.append(reading.time_stamp)
+    plot_png()
 
     return render_template('index.html', title=_title, user=_user, posts=_posts, data=_data, form=name_form)
 
 
 @app.route('/plot.png')
 def plot_png():
-    fig = create_figure()
+    fig = create_figure(time_arr, temp_arr)
     output = io.BytesIO()
     FigureCanvas(fig).print_png(output)
     return Response(output.getvalue(), mimetype='image/png')
 
-def create_figure():
+def create_figure(x_input, y_input):
     fig = Figure()
     axis = fig.add_subplot(1, 1, 1)
-    xs = [1, 2, 3]
-    ys = [3, 2, 1]
+    xs = x_input
+    ys = y_input
     axis.plot(xs, ys)
     return fig

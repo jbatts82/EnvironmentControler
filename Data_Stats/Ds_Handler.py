@@ -87,7 +87,7 @@ class Ds_Sensor(Ds_Manager):
         last_record = self.get_last_sensor_rec()
         last_time_stamp = last_record.time_stamp
         past_time_stamp = last_time_stamp - timedelta(minutes = mins)
-        query = self.the_session.query(Reading).filter(Reading.time_stamp >= past_time_stamp).all()
+        query = self.the_session.query(Reading).filter(Reading.time_stamp >= past_time_stamp, Reading.sensor == "upper_sensor").all()
         return query
 
     # Untested
