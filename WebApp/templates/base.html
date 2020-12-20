@@ -8,12 +8,14 @@
     </head>
     <body>
         <div>
-            Microblog!!:
+            Garden Monitoring System:
             <a href="{{ url_for('index') }}">Home</a>
         </div>
         <hr>
         {% block content %}{% endblock %}
+        <hr>
         {% block input %}{% endblock %}
+        <hr>
         {% block plot %}{% endblock %}
     </body>
 </html>

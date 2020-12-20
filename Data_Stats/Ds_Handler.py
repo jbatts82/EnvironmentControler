@@ -83,11 +83,11 @@ class Ds_Sensor(Ds_Manager):
             print("Temperature: ", each.temperature)
             print("Humidity   : ", each.humidity)
 
-    def get_last_recs_time(self, mins):
+    def get_last_recs_time(self, mins, sensor_name):
         last_record = self.get_last_sensor_rec()
         last_time_stamp = last_record.time_stamp
         past_time_stamp = last_time_stamp - timedelta(minutes = mins)
-        query = self.the_session.query(Reading).filter(Reading.time_stamp >= past_time_stamp, Reading.sensor == "upper_sensor").all()
+        query = self.the_session.query(Reading).filter(Reading.time_stamp >= past_time_stamp, Reading.sensor == sensor_name).all()
         return query
 
     # Untested

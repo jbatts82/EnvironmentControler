@@ -5,17 +5,14 @@
 ###############################################################################
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, SelectField
 from wtforms.validators import DataRequired
 
 
-
-
-class NameForm(FlaskForm):
-    name = StringField('Which actor is your favorite?', validators=[DataRequired()])
-    submit = SubmitField('Submit')
-
-
+class GraphConfig(FlaskForm):
+	sensor_name = SelectField(u'Sensor Name', choices=[('upper_sensor', 'Sensor 1'), ('lower_sensor', 'Sensor 2')])
+	time = IntegerField('Begin Graph X Mins Ago')
+	submit = SubmitField('Submit')
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

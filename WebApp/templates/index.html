@@ -3,12 +3,7 @@
 
 
 {% block content %}
-    <h1>Hi, {{ user.username }}!</h1>
-    {% for post in posts %}
-    <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
-    <div></div>
-    {% endfor %}
-
+    <h1>Last {{data[3]}} Reading</h1>
     <b>Temperature</b> = {{data[0]}}</br>
     <b>Humiditiy</b> = {{data[1]}}</br>
     <b>Time</b> = {{data[2]}}</br>
@@ -17,7 +12,7 @@
 
 
 {% block input %}
-    <h1>Input temp thresh</h1>
+    <h1>Graph Configuration</h1>
      {{ wtf.quick_form(form) }}
 {% endblock %}
 

@@ -24,9 +24,6 @@ from WebApp import Config
 @app.route('/index')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    print("Hello MMMEEE")
-    print("T!!!!!!!!he Request Method: {}".format(request.method))
-    
     _user = {'username': 'John'}
     _title = 'RPiii Environment Controller'
     _posts = [
@@ -41,16 +38,21 @@ def index():
     ]
     config = Config()
     data_app = Ds_App(config)
-    last_rec = data_app.get_last_sensor_reading()
-    _data = [last_rec.temperature_f, last_rec.humidity, last_rec.time_data, last_rec.name]
-
-    name_form = forms.NameForm()
-    if name_form.validate_on_submit():
-        name = name_form.name.data
-        print("The Name is: {}".format(name))
 
 
-    readings = data_app.get_previous_readings_time(60)
+    sensor_name = "upper_sensor"
+    previous_minutes_back = 60
+    graphConfig = forms.GraphConfig()
+    if graphConfig.validate_on_submit():
+        minutes = graphConfig.time.data
+        sensor_name = graphConfig.sensor_name.data
+        print("Sensor Choice: {}".format(sensor_name))
+        print("The Minutes Back: {}".format(minutes))
+        previous_minutes_back = minutes
+
+
+
+    readings = data_app.get_previous_readings_time(previous_minutes_back, sensor_name)
     global temp_arr, time_arr
     temp_arr = []
     time_arr = []
@@ -59,7 +61,10 @@ def index():
         time_arr.append(reading.time_stamp)
     plot_png()
 
-    return render_template('index.html', title=_title, user=_user, posts=_posts, data=_data, form=name_form)
+    last_rec = readings[-1]
+    _data = [last_rec.temperature, last_rec.humidity, last_rec.time_stamp, last_rec.sensor]
+
+    return render_template('index.html', title=_title, user=_user, posts=_posts, data=_data, form=graphConfig)
 
 
 @app.route('/plot.png')

@@ -72,11 +72,8 @@ class Ds_App:
 
     # Untested
 
-	def get_previous_readings_time(self, mins_previous):
-		data = self.data_base.get_last_recs_time(mins_previous)
-		
-
-		
+	def get_previous_readings_time(self, mins_previous, sensor_name):
+		data = self.data_base.get_last_recs_time(mins_previous, sensor_name)
 		return data
 
 	def get_rolling_avg_temp(self, sensor_name):
