@@ -42,7 +42,8 @@ def index():
 
     sensor_name = "upper_sensor"
     previous_minutes_back = 60
-    graphConfig = forms.GraphConfig()
+
+    graphConfig = forms.GraphConfigForm()
     if graphConfig.validate_on_submit():
         minutes = graphConfig.time.data
         sensor_name = graphConfig.sensor_name.data
@@ -53,11 +54,13 @@ def index():
 
 
     readings = data_app.get_previous_readings_time(previous_minutes_back, sensor_name)
-    global temp_arr, time_arr
+    global temp_arr, time_arr, hum_arr
     temp_arr = []
     time_arr = []
+    hum_arr = []
     for reading in readings:
         temp_arr.append(reading.temperature)
+        hum_arr.append(reading.humidity)
         time_arr.append(reading.time_stamp)
     plot_png()
 

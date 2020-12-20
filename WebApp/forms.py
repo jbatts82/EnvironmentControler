@@ -9,13 +9,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Integ
 from wtforms.validators import DataRequired
 
 
-class GraphConfig(FlaskForm):
+class GraphConfigForm(FlaskForm):
 	sensor_name = SelectField(u'Sensor Name', choices=[('upper_sensor', 'Sensor 1'), ('lower_sensor', 'Sensor 2')])
 	time = IntegerField('Begin Graph X Mins Ago')
 	submit = SubmitField('Submit')
-
-class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
