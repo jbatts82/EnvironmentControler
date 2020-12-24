@@ -70,16 +70,32 @@ class Ds_App:
 		print("Humidity   : {}".format(record.humidity))
 		print("")
 
-    # Untested
-
 	def get_previous_readings_time(self, mins_previous, sensor_name):
 		data = self.data_base.get_last_recs_time(mins_previous, sensor_name)
 		return data
 
+	def verify_sensor_data(self, sensor_data):
+		sensor_name = sensor_data.name
+		sensor_temp = sensor_data.temperature_f
+		rolling_average_temp = self.get_rolling_avg_temp(sensor_name)
+		print("Processing         : Writing Record to Database...")
+		print("The Rolling Average: {}".format(rolling_average_temp))
+		print("The Sensor Temp    : {}".format(sensor_temp))
+
+		if rolling_average_temp == False:
+			return True
+
+		difference = abs((sensor_temp - rolling_average_temp))
+		print("The Difference     : {}".format(difference))
+		if difference > 10:
+			return False
+		else:
+			return True
+
 	def get_rolling_avg_temp(self, sensor_name):
 		print("Rolling Avg Temperature From: ", sensor_name)
 
-		data = self.data_base.get_last_recs_time(5)
+		data = self.data_base.get_last_recs_time(5, sensor_name)
 		
 		count = 0
 		t_sum = 0
@@ -89,10 +105,16 @@ class Ds_App:
 				count = count + 1
 				t_sum = t_sum + record.temperature
 
-		rolling_average = t_sum / count
+		if count == 0:
+			return False
+		else:
+			rolling_average = t_sum / count
+			return rolling_average
 
-		return rolling_average
 
+
+    # Untested
+    
 	def get_rolling_avg_humid(self, sensor_name):
 		print("Rolling Avg Humidity From: ", sensor_name)
 

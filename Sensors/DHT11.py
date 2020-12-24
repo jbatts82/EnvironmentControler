@@ -31,13 +31,13 @@ class DHT11:
         pass
         
     def process_sensor(self):
-        print("Processing         :", self.name)
+        print("Processing             :", self.name)
         try:
             humidity, temperature_c = Adafruit_DHT.read_retry(self.sensor_type, self.pin)
             temperature_f = temperature_c * 9/5.0 + 32
-            # print("Sensor         : {}".format(self.name))
-            # print("The Temperature: {}".format(str(temperature_f)))
-            # print("The Humidity   : {}".format(str(humidity)))
+            print("Sensor!            : {}".format(self.name))
+            print("The Temperature!   : {}".format(str(temperature_f)))
+            print("The Humidity!      : {}".format(str(humidity)))
 
             self.current_data.time_data = datetime.now()
             self.current_data.temperature_f = temperature_f
@@ -48,10 +48,10 @@ class DHT11:
             self.current_data = self.previous_data
         else:
             print("Success Processing :", self.name)
-            # print("Time              :", self.current_data.time_data)
-            # print("Temp              :", self.current_data.temperature_f)
-            # print("Humidity          :", self.current_data.humidity)
-            # print("Time              :", self.current_data.error_state)
+            print("Time               :", self.current_data.time_data)
+            print("Temp               :", self.current_data.temperature_f)
+            print("Humidity           :", self.current_data.humidity)
+            print("Error State        :", self.current_data.error_state)
             self.previous_data = self.current_data
         finally:
             pass

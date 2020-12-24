@@ -35,14 +35,18 @@ async def process_sensor_1():
     sensor1.process_sensor()
     sensor_data = sensor1.get_current_data()
     database = Ds_App(config)
-    database.write_sensor_data(sensor_data)
+    is_good = database.verify_sensor_data(sensor_data)
+    if is_good:
+        database.write_sensor_data(sensor_data)
     
 async def process_sensor_2():
     global sensor2
     sensor2.process_sensor()
     sensor_data = sensor2.get_current_data()
     database = Ds_App(config)
-    database.write_sensor_data(sensor_data)
+    is_good = database.verify_sensor_data(sensor_data)
+    if is_good:
+        database.write_sensor_data(sensor_data)
     
 async def process_status_led():
     Leds.toggle_sensor_led()
