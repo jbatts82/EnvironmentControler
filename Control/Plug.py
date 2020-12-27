@@ -79,19 +79,19 @@ def init_plug():
     asyncio.run(init_the_plugs())
 
 def get_plug1_state():
+    init_plug()
     try:
         plug1_state = asyncio.run(is_plug1_on())
     except:
         plug1_state = "Error"
-        init_plug()
     return plug1_state
 
 def get_plug2_state():
+    init_plug()
     try:
         plug2_state = asyncio.run(is_plug2_on())
     except:
         plug2_state = "Error"
-        init_plug()
     return plug2_state
 
 def plug1_info():

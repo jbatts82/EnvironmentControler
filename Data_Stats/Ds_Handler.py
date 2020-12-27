@@ -7,7 +7,7 @@ import sys
 sys.path.append('/home/mario/EnvironmentController/')
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Table, Column, Integer, String, DateTime, Float
+from sqlalchemy import Table, Column, Integer, String, DateTime, Float, Boolean
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import MetaData
 from datetime import datetime
@@ -24,7 +24,13 @@ class Reading(base):
     temperature = Column('Temperature', Float)
     humidity = Column('Humidity', Float)
 
-
+class ControlStatus(base):
+    __tablename__ = 'ControlStats'
+    time_stamp = Column('TimeDate', DateTime, primary_key=True, index=True)
+    heater_state = Column('Heater', Boolean)
+    humidifer_state = Column('Humidifier', Boolean)
+    fan_state = Column('Fan', Boolean)
+    light_state = Column('Light', Boolean)
 
 
 ###############################################################################
@@ -42,15 +48,27 @@ class Ds_Manager:
         self.session = sessionmaker(bind=self.engine)
         self.the_session = self.session()
         self.meta = MetaData()
-        if not self.engine.dialect.has_table(self.engine, Reading.__tablename__): #if table doesn't exist
+
+class Ds_Control(Ds_Manager):
+    def __init__(self, config=None):
+        super().__init__(config)
+        if not self.engine.dialect.has_table(self.engine, ControlStatus.__tablename__): #if table doesn't exist
             self.meta.create_all(self.engine)
+
+    def insert_record(self, control):
+        print("Processing         : Writing Control to Database...")
+        self.the_session.add(control)
+        self.the_session.commit()
+        print("Success            : Write Complete")
 
 class Ds_Sensor(Ds_Manager):
     def __init__(self, config=None):
         super().__init__(config)
+        if not self.engine.dialect.has_table(self.engine, Reading.__tablename__): #if table doesn't exist
+            self.meta.create_all(self.engine)
 
     def insert_record(self, reading):
-        print("Processing         : Writing Record to Database...")
+        print("Processing         : Writing Reading to Database...")
         self.the_session.add(reading)
         self.the_session.commit()
         print("Success            : Write Complete")

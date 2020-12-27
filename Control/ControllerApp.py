@@ -129,6 +129,8 @@ def Task_Environment_Control():
     print("Fan State          :", fan_state)
     print("LED Light State    :", light_state)
 
+    data_app.write_control_data(current_time, heater_state, humidifier_state, fan_state, light_state)
+
     Control.Leds.toggle_control_led()
     print("*******************************************************************************")
 

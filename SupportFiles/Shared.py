@@ -20,3 +20,18 @@ class DHT11_Data:
         print("Humidity   : ",self.humidity)
         print("Temperature: ",self.temperature_f)
         print("Error State: ",self.error_state)
+
+class Control_Data:
+    def __init__(self, time_stamp=None, heater_state=None, humidifer_state=None, fan_state=None, light_state=None):
+        self.time_stamp = time_stamp
+        self.heater_state = heater_state
+        self.humidifer_state = humidifer_state
+        self.fan_state = fan_state
+        self.light_state = light_state
+
+    def print_data(self):
+        print("Time Stamp : ",self.time_stamp)
+        print("Heater Stat: ",self.heater_state)
+        print("Hum Stat   : ",self.humidifer_state)
+        print("Fan Stat   : ",self.fan_state)
+        print("LED Stat   : ",self.light_state)

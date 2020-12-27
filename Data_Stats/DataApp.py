@@ -8,14 +8,15 @@
 
 
 from SupportFiles.Shared import DHT11_Data
-from Data_Stats.Ds_Handler import Ds_Sensor
-from Data_Stats.Ds_Handler import Reading
+from Data_Stats.Ds_Handler import Ds_Sensor, Ds_Control
+from Data_Stats.Ds_Handler import Reading, ControlStatus
 
 
 class Ds_App:
 	def __init__(self, config=None):
 		self.current_sensor_data = DHT11_Data()
 		self.data_base = Ds_Sensor(config)
+		self.control_base = Ds_Control(config)
 	
 	def write_sensor_data(self, some_sensor_data):
 		# accept sensor context data and format it for database context
@@ -28,6 +29,15 @@ class Ds_App:
 		reading.humidity = self.current_sensor_data.humidity
 		# write new database object to database
 		self.data_base.insert_record(reading)
+
+	def write_control_data(self, time_stamp, heater_state, humidifer_state, fan_state, light_state):
+		control_stats = ControlStatus()
+		control_stats.time_stamp = time_stamp
+		control_stats.heater_state = heater_state
+		control_stats.humidifer_state = humidifer_state
+		control_stats.fan_state = fan_state
+		control_stats.light_state = light_state
+		self.control_base.insert_record(control_stats)
 
 	def get_last_sensor_reading(self):
 		last_rec = self.data_base.get_last_sensor_rec()

@@ -51,7 +51,6 @@ def index():
         previous_minutes_back = minutes
 
 
-
     readings = data_app.get_previous_readings_time(previous_minutes_back, sensor_name)
     global temp_arr, time_arr, hum_arr
     temp_arr = []
@@ -61,8 +60,6 @@ def index():
         temp_arr.append(reading.temperature)
         hum_arr.append(reading.humidity)
         time_arr.append(reading.time_stamp)
-
-    #plot_png()
 
 
     last_rec = readings[-1]
@@ -75,16 +72,13 @@ def index():
 def plot_png():
     fig = create_figure(time_arr, temp_arr)
     output = io.BytesIO()
-    #the agg backend
     FigureCanvasAgg(fig).print_png(output)
-    #fig.savefig("WebApp/plot.png")
     return Response(output.getvalue(), mimetype='image/png')
 
 def create_figure(x_input, y_input):
     fig = Figure(figsize=(10,5))
     xs = x_input
     ys = y_input
-
 
     axis = fig.add_subplot(2, 1, 1, xlabel='Time', ylabel='Temperature')
     axis.plot(xs, ys)
