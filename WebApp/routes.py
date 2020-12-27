@@ -5,13 +5,12 @@
 ###############################################################################
 
 from flask import render_template, flash, redirect, url_for, Flask, send_file, make_response, request, Response
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+
+from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
+
 import io
 import random
-import numpy as np
-
 
 from WebApp import forms
 from WebApp import app
@@ -62,7 +61,9 @@ def index():
         temp_arr.append(reading.temperature)
         hum_arr.append(reading.humidity)
         time_arr.append(reading.time_stamp)
-    plot_png()
+
+    #plot_png()
+
 
     last_rec = readings[-1]
     _data = [last_rec.temperature, last_rec.humidity, last_rec.time_stamp, last_rec.sensor]
@@ -74,13 +75,22 @@ def index():
 def plot_png():
     fig = create_figure(time_arr, temp_arr)
     output = io.BytesIO()
-    FigureCanvas(fig).print_png(output)
+    #the agg backend
+    FigureCanvasAgg(fig).print_png(output)
+    #fig.savefig("WebApp/plot.png")
     return Response(output.getvalue(), mimetype='image/png')
 
 def create_figure(x_input, y_input):
-    fig = Figure()
-    axis = fig.add_subplot(1, 1, 1)
+    fig = Figure(figsize=(10,5))
     xs = x_input
     ys = y_input
+
+
+    axis = fig.add_subplot(2, 1, 1, xlabel='Time', ylabel='Temperature')
     axis.plot(xs, ys)
+
+    ys = hum_arr
+    axis = fig.add_subplot(2, 1, 2, xlabel='Time', ylabel='Humidity')
+    axis.plot(xs, ys)
+
     return fig
