@@ -64,6 +64,7 @@ class Ds_Control(Ds_Manager):
     def get_last_record(self):
         query = self.the_session.query(ControlStatus).order_by(ControlStatus.time_stamp.desc())
         last_record = query.first()
+        print("HUMstate is: {}".format(last_record.humidifier_state))
         return last_record
 
     def get_last_records(self, past_minutes_time):

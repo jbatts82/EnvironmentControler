@@ -30,11 +30,11 @@ class Ds_App:
 		# write new database object to database
 		self.data_base.insert_record(reading)
 
-	def write_control_data(self, time_stamp, heater_state, humidifer_state, fan_state, light_state):
+	def write_control_data(self, time_stamp, heater_state, humidifier_state, fan_state, light_state):
 		control_stats = ControlStatus()
 		control_stats.time_stamp = time_stamp
 		control_stats.heater_state = heater_state
-		control_stats.humidifer_state = humidifer_state
+		control_stats.humidifier_state = humidifier_state
 		control_stats.fan_state = fan_state
 		control_stats.light_state = light_state
 		self.control_base.insert_record(control_stats)
