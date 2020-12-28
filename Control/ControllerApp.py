@@ -21,6 +21,7 @@ from time import sleep
 from datetime import datetime
 
 def Initialize_Control(config):
+    print("Processing         : Initializing Control Objects")
     global the_time, the_heater, the_humidifier, the_fan, the_light, the_config, data_app
     the_config = config
     the_time = OS_Clock()
@@ -29,7 +30,8 @@ def Initialize_Control(config):
     the_fan = Fan()
     the_light = Light()
     data_app = Ds_App(config)
-    print("Control Objects Initialized")
+    print("Processing         : Control Objects Initialized")
+
 
 def Task_Process_1():
     print("Task1")
@@ -59,7 +61,6 @@ def Task_Environment_Control():
     on_time = the_time.get_time_since_start()
 
     temp_setting = get_temp_setting()
-    print("Processing         : Good {}".format(temp_setting['name']))
     min_temp_threshold = temp_setting['temp']
 
     # Get Sensor Readings
@@ -136,7 +137,7 @@ def Task_Environment_Control():
     print("*******************************************************************************")
 
 def toggle_air_system():
-    print("Set Exhaust on for 7 minutes")
+    print("Processing         : Set Exhaust on for 7 minutes")
     the_fan.Set_Fan_Timer(7)
 
 def get_temp_setting():

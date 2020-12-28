@@ -23,18 +23,7 @@ from WebApp import Config
 @app.route('/index')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    _user = {'username': 'John'}
     _title = 'RPiii Environment Controller'
-    _posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Hello me, Its me again'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'A credit to dementia'
-        }
-    ]
     config = Config()
     data_app = Ds_App(config)
 
@@ -45,10 +34,9 @@ def index():
     if graphConfig.validate_on_submit():
         minutes = graphConfig.time.data
         sensor_name = graphConfig.sensor_name.data
-        print("Sensor Choice: {}".format(sensor_name))
-        print("The Minutes Back: {}".format(minutes))
+        #print("Sensor Choice: {}".format(sensor_name))
+        #print("The Minutes Back: {}".format(minutes))
         previous_minutes_back = minutes
-
 
     readings = data_app.get_previous_readings_time(previous_minutes_back, sensor_name)
     global temp_arr, time_arr, hum_arr
@@ -71,15 +59,14 @@ def index():
         control_time.append(control_stat.time_stamp)
         heater_state.append(control_stat.heater_state)
         humidifier_state.append(control_stat.humidifier_state)
-        print("HumState:{}".format(control_stat.humidifier_state))
         fan_state.append(control_stat.fan_state)
         light_state.append(control_stat.light_state)
-        print("FanState:{}".format(control_stat.fan_state))
+
 
     last_rec = readings[-1]
     _data = [last_rec.temperature, last_rec.humidity, last_rec.time_stamp, last_rec.sensor]
 
-    return render_template('index.html', title=_title, user=_user, posts=_posts, data=_data, form=graphConfig)
+    return render_template('index.html', title=_title, data=_data, form=graphConfig)
 
 
 @app.route('/plot.png')

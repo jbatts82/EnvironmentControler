@@ -92,23 +92,19 @@ class Ds_App:
 		sensor_name = sensor_data.name
 		sensor_temp = sensor_data.temperature_f
 		rolling_average_temp = self.get_rolling_avg_temp(sensor_name)
-		print("Processing         : Writing Record to Database...")
-		print("The Rolling Average: {}".format(rolling_average_temp))
-		print("The Sensor Temp    : {}".format(sensor_temp))
 
 		if rolling_average_temp == False:
 			return True
 
 		difference = abs((sensor_temp - rolling_average_temp))
-		print("The Difference     : {}".format(difference))
+
 		if difference > 10:
 			return False
 		else:
 			return True
 
 	def get_rolling_avg_temp(self, sensor_name):
-		print("Rolling Avg Temperature From: ", sensor_name)
-
+		
 		data = self.data_base.get_last_recs_time(5, sensor_name)
 		
 		count = 0
