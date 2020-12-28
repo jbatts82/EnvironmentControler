@@ -49,7 +49,6 @@ async def process_sensor_2():
         database.write_sensor_data(sensor_data)
     
 async def process_status_led():
-    Leds.toggle_sensor_led()
     t.sleep(1)
 
 async def main_loop():

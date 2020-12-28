@@ -132,8 +132,6 @@ def Task_Environment_Control():
 
 
     data_app.write_control_data(current_time, heater_state, humidifier_state, fan_state, light_state)
-
-    Control.Leds.toggle_control_led()
     print("*******************************************************************************")
 
 def toggle_air_system():
@@ -176,7 +174,6 @@ def Run_Tasks():
     try:
         while True: #run forever
             schedule.run_pending()
-            Control.Leds.toggle_1s_led()
             sleep(1)
     except:
         print("System Error")

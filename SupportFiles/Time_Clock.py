@@ -16,7 +16,8 @@ class OS_Clock:
     system_start_time = datetime.datetime.now()
 
     def __init__(self):
-        print("Init Clock")
+        print("Processing         : Clock Initializing")
+
 
     def get_time_since_start(self):
         delta_time = datetime.datetime.now() - OS_Clock.system_start_time
@@ -43,7 +44,7 @@ class OS_Clock:
 
 class Device_Clock:
     def __init__(self):
-        print("Init Clock")
+        print("Processing         : Clock Initializing")
         self.clock_start_time = datetime.datetime.now()
         self.turn_off_t_stamp = self.clock_start_time
         self.timer_state = False

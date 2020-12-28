@@ -16,14 +16,28 @@ led2 = LED(6)
 led3 = LED(13)
 led4 = LED(19)
 
+sleep_mode = False
+
+def sleep_mode_led(state):
+	sleep_mode = state
+	if sleep_mode:
+		led1.off()
+		led2.off()
+		led3.off()
+		led4.off()
+	
+
 def toggle_sensor_led():
-    led1.toggle()
+	if sleep_mode == False:
+		led1.toggle()
 
 def toggle_control_led():
-    led2.toggle()
+	if sleep_mode == False:
+		led2.toggle()
     
 def toggle_1s_led():
-    led3.toggle()
+	if sleep_mode == False:
+		led3.toggle()
 
 
 
