@@ -23,10 +23,10 @@ from WebApp import Config
 @app.route('/index')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    _title = 'RPiii Environment Controller'
+
     config = Config()
     data_app = Ds_App(config)
-
+    _title = 'RPiii Environment Controller'
     sensor_name = "upper_sensor"
     previous_minutes_back = 60
 
@@ -34,8 +34,6 @@ def index():
     if graphConfig.validate_on_submit():
         minutes = graphConfig.time.data
         sensor_name = graphConfig.sensor_name.data
-        #print("Sensor Choice: {}".format(sensor_name))
-        #print("The Minutes Back: {}".format(minutes))
         previous_minutes_back = minutes
 
     readings = data_app.get_previous_readings_time(previous_minutes_back, sensor_name)

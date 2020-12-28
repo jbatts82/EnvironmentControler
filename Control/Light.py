@@ -33,6 +33,15 @@ class Light:
         print("Processing         :", self.name)
         try: 
             self.state = Plug.get_plug2_state()
+
+            # Turn Plug LEDs off at night time
+            if self.state == True:
+                Plug.plug1_led_on()
+                Plug.plug2_led_on()
+            else:
+                Plug.plug1_led_off()
+                Plug.plug2_led_off()
+
             self.previous_s = self.state
         except: 
             print("SIGNAL SNA         :", self.name)

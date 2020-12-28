@@ -73,6 +73,26 @@ async def get_plug2_info():
     print(plug2.rssi)
     print(plug2.mac)
 
+async def set_plug1_led_on():
+    global plug1
+    await plug1.set_led(True)
+    await plug1.update()
+
+async def set_plug1_led_off():
+    global plug1
+    await plug1.set_led(False)
+    await plug1.update()
+
+async def set_plug2_led_on():
+    global plug2
+    await plug2.set_led(True)
+    await plug2.update()
+
+async def set_plug2_led_off():
+    global plug2
+    await plug2.set_led(False)
+    await plug2.update()
+
 # Public Interfaces
 
 def init_plug():
@@ -111,3 +131,15 @@ def plug2_on():
     
 def plug2_off():
     asyncio.run(turn_plug2_off()) 
+
+def plug1_led_off():
+    asyncio.run(set_plug1_led_off())
+
+def plug1_led_on():
+    asyncio.run(set_plug1_led_on())
+
+def plug2_led_off():
+    asyncio.run(set_plug2_led_off())
+
+def plug2_led_on():
+    asyncio.run(set_plug2_led_on())
