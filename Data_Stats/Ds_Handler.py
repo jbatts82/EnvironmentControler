@@ -28,7 +28,7 @@ class ControlStatus(base):
     __tablename__ = 'ControlStats'
     time_stamp = Column('TimeDate', DateTime, primary_key=True, index=True)
     heater_state = Column('Heater', Boolean)
-    humidifer_state = Column('Humidifier', Boolean)
+    humidifier_state = Column('Humidifier', Boolean)
     fan_state = Column('Fan', Boolean)
     light_state = Column('Light', Boolean)
 
@@ -60,6 +60,18 @@ class Ds_Control(Ds_Manager):
         self.the_session.add(control)
         self.the_session.commit()
         print("Success            : Write Complete")
+
+    def get_last_record(self):
+        query = self.the_session.query(ControlStatus).order_by(ControlStatus.time_stamp.desc())
+        last_record = query.first()
+        return last_record
+
+    def get_last_records(self, past_minutes_time):
+        last_record = self.get_last_record()
+        last_time_stamp = last_record.time_stamp
+        past_time_stamp = last_time_stamp - timedelta(minutes = past_minutes_time)
+        query = self.the_session.query(ControlStatus).filter(ControlStatus.time_stamp >= past_time_stamp).all()
+        return query
 
 class Ds_Sensor(Ds_Manager):
     def __init__(self, config=None):

@@ -84,6 +84,10 @@ class Ds_App:
 		data = self.data_base.get_last_recs_time(mins_previous, sensor_name)
 		return data
 
+	def get_previous_control_stats(self, mins_previous):
+		data = self.control_base.get_last_records(mins_previous)
+		return data
+
 	def verify_sensor_data(self, sensor_data):
 		sensor_name = sensor_data.name
 		sensor_temp = sensor_data.temperature_f
