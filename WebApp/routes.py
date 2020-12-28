@@ -106,9 +106,9 @@ def create_figure():
     axis = fig.add_subplot(6, 1, 3, xlabel='Control Time', ylabel='Heater State', yticks=(0,1))
     axis.plot(xs, ys)
 
-    # ys = humidifier_state
-    # axis = fig.add_subplot(6, 1, 3, xlabel='Control Time', ylabel='Humidifier State', yticks=(0,1))
-    # axis.plot(xs, ys)
+    ys = humidifier_state
+    axis = fig.add_subplot(6, 1, 4, xlabel='Control Time', ylabel='Humidifier State', yticks=(0,1))
+    axis.plot(xs, ys)
 
     ys = fan_state
     axis = fig.add_subplot(6, 1, 5, xlabel='Control Time', ylabel='Fan State', yticks=(0,1))
