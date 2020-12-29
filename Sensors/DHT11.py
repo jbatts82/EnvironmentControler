@@ -32,6 +32,7 @@ class DHT11:
         
     def process_sensor(self):
         print("Processing         :", self.name)
+        process_start_time = datetime.now()
         try:
             humidity, temperature_c = Adafruit_DHT.read_retry(self.sensor_type, self.pin)
             temperature_f = temperature_c * 9/5.0 + 32
@@ -50,7 +51,8 @@ class DHT11:
             print("Error State        :", self.current_data.error_state)
             self.previous_data = self.current_data
         finally:
-            pass
+            process_end_time = datetime.now()
+            print("Process Time       : {}".format(process_end_time - process_start_time))
     
     def get_current_data(self):
         return self.current_data

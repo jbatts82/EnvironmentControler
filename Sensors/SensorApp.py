@@ -21,6 +21,8 @@ config = Config()
 async def init_sensors():
     await init_sensor_1(config)
     await init_sensor_2(config)
+    await init_sensor_3(config)
+    await init_sensor_4(config)
     
 async def init_sensor_1(config):
     global sensor1
@@ -29,6 +31,14 @@ async def init_sensor_1(config):
 async def init_sensor_2(config):
     global sensor2
     sensor2 = DHT11(config)
+
+async def init_sensor_3(config):
+    global sensor3
+    sensor3 = DHT11(config)
+
+async def init_sensor_4(config):
+    global sensor4
+    sensor4 = DHT11(config)
 
 async def process_sensor_1():
     global sensor1
@@ -47,19 +57,36 @@ async def process_sensor_2():
     is_good = database.verify_sensor_data(sensor_data)
     if is_good:
         database.write_sensor_data(sensor_data)
-    
-async def process_status_led():
-    t.sleep(1)
+
+async def process_sensor_3():
+    global sensor3
+    sensor3.process_sensor()
+    sensor_data = sensor3.get_current_data()
+    database = Ds_App(config)
+    is_good = database.verify_sensor_data(sensor_data)
+    if is_good:
+        database.write_sensor_data(sensor_data)
+
+async def process_sensor_4():
+    global sensor4
+    sensor4.process_sensor()
+    sensor_data = sensor4.get_current_data()
+    database = Ds_App(config)
+    is_good = database.verify_sensor_data(sensor_data)
+    if is_good:
+        database.write_sensor_data(sensor_data)
 
 async def main_loop():
     await init_sensors()
     while True:
-        await process_status_led()
         await process_sensor_1()
-        t.sleep(30)
-        await process_status_led()
+        t.sleep(15)
         await process_sensor_2()
-        t.sleep(30)
+        t.sleep(15)
+        await process_sensor_3()
+        t.sleep(15)
+        await process_sensor_4()
+        t.sleep(15)
 
 # if __name__ == '__main__':
 #     print("Starting          :  ", __file__)

@@ -27,7 +27,7 @@ def index():
     config = Config()
     data_app = Ds_App(config)
     _title = 'RPiii Environment Controller'
-    sensor_name = "upper_sensor"
+    sensor_name = "plant1"
     previous_minutes_back = 60
 
     graphConfig = forms.GraphConfigForm()

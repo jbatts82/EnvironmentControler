@@ -26,8 +26,13 @@ class Config(object):
     database_loc = '/db_test.db'
 
     # Sensor Configurations
-    sensor_cnt = 2
-    sensor_configs = [{"name":"upper_sensor", "data_pin":17, "assigned":False, "sensor_type":11}, {"name":"lower_sensor", "data_pin":26, "assigned":False, "sensor_type":11}]
+    sensor_cnt = 4
+    sensor_configs = []
+    sensor_configs.append({"name":"plant1", "data_pin":17, "assigned":False, "sensor_type":11})
+    sensor_configs.append({"name":"plant2", "data_pin":26, "assigned":False, "sensor_type":11})
+    sensor_configs.append({"name":"intake_air", "data_pin":27, "assigned":False, "sensor_type":11})
+    sensor_configs.append({"name":"upper_room_air", "data_pin":22, "assigned":False, "sensor_type":11})
+    
     
 
     time_table = []

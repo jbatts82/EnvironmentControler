@@ -32,16 +32,6 @@ def Initialize_Control(config):
     data_app = Ds_App(config)
     print("Processing         : Control Objects Initialized")
 
-
-def Task_Process_1():
-    print("Task1")
-
-
-def Task_Process_2():
-    print("Task2")
-
- 
-   
 def Task_Environment_Control():
     print("*******************************************************************************")
     print("Processing         : Environmental Controls")
@@ -132,6 +122,8 @@ def Task_Environment_Control():
 
 
     data_app.write_control_data(current_time, heater_state, humidifier_state, fan_state, light_state)
+
+    print("Processing         : Environmental Controls Processed")
     print("*******************************************************************************")
 
 def toggle_air_system():
@@ -162,13 +154,7 @@ def Run_Tasks():
     schedule.every().minute.at(":10").do(the_fan.Process_Fan)
     schedule.every().minute.at(":40").do(the_light.Process_Light)
 
-    schedule.every().day.at("00:23").do(toggle_air_system)
-    schedule.every().day.at("03:23").do(toggle_air_system)
-    schedule.every().day.at("06:23").do(toggle_air_system)
-    schedule.every().day.at("09:23").do(toggle_air_system)
-    schedule.every().day.at("12:23").do(toggle_air_system)
-    schedule.every().day.at("15:23").do(toggle_air_system)
-    schedule.every().day.at("18:23").do(toggle_air_system)
+    schedule.every().hour.at(":23").do(toggle_air_system)
 
 
     try:

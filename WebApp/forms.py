@@ -7,9 +7,13 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, SelectField
 from wtforms.validators import DataRequired
-
+from WebApp import Config
 
 class GraphConfigForm(FlaskForm):
-	sensor_name = SelectField(u'Sensor Name', choices=[('upper_sensor', 'Sensor 1'), ('lower_sensor', 'Sensor 2')])
+	config = Config()
+	sensors = config.sensor_configs
+
+
+	sensor_name = SelectField(u'Sensor Name', choices=[('plant1', 'Sensor 1'), ('plant2', 'Sensor 2'), ('intake_air', 'Sensor 3'), ('upper_room_air', 'Sensor 4')])
 	time = IntegerField('Begin Graph X Mins Ago')
 	submit = SubmitField('Submit')

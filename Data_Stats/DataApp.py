@@ -59,14 +59,14 @@ class Ds_App:
 		return last_humid
 
 	def get_last_avg_room_temp(self):
-		sensor1_temp = self.get_last_temp("upper_sensor")
-		sensor2_temp = self.get_last_temp("lower_sensor")
+		sensor1_temp = self.get_last_temp("plant1")
+		sensor2_temp = self.get_last_temp("plant2")
 		avg_temp = (sensor1_temp + sensor2_temp) / 2
 		return avg_temp
 
 	def get_last_avg_room_humid(self):
-		sensor1_temp = self.get_last_humid("upper_sensor")
-		sensor2_temp = self.get_last_humid("lower_sensor")
+		sensor1_temp = self.get_last_humid("plant1")
+		sensor2_temp = self.get_last_humid("plant2")
 		avg_humid = (sensor1_temp + sensor2_temp) / 2
 		return avg_humid
 
