@@ -56,8 +56,10 @@ def Task_Environment_Control():
     # Get Sensor Readings
     avg_temp = data_app.get_last_avg_room_temp()
     avg_humidity = data_app.get_last_avg_room_humid()
-    intake_temp = data_app.get_last_temp("upper_sensor")
-    lower_temp = data_app.get_last_temp("lower_sensor")
+    plant1 = data_app.get_last_temp("plant1")
+    plant2 = data_app.get_last_temp("plant2")
+    intake_temp = data_app.get_last_temp("intake_air")
+    upper_room_air = data_app.get_last_temp("upper_room_air")
 
     # Set Outputs
     fan_state = the_fan.Get_State()
@@ -99,12 +101,10 @@ def Task_Environment_Control():
     print("System On Time     :", on_time)
     print("*******************************************************************************")
     print("System Stats")
-    print("Average Temp       :", avg_temp)
-    print("Average Humidity   :", avg_humidity)
+    print("Plant 1 Temp       :", plant1)
+    print("Plant 2 Temp       :", plant2)
     print("Intake Temp        :", intake_temp)
-    print("Lower Temp         :", lower_temp) 
-    # print("Max Humidity Seen  :", max_humidity)
-    # print("Max Temp Seen      :", max_temperature)
+    print("Upper Room Temp    :", upper_room_air) 
     print("*******************************************************************************")
     print("Config File")
     print("Fan OverRide State :", fan_override)
@@ -119,6 +119,8 @@ def Task_Environment_Control():
     print("Humidifier State   :", humidifier_state)
     print("Fan State          :", fan_state)
     print("LED Light State    :", light_state)
+
+
 
 
     data_app.write_control_data(current_time, heater_state, humidifier_state, fan_state, light_state)

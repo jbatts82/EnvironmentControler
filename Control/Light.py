@@ -32,6 +32,7 @@ class Light:
     def Process_Light(self):
         print("Processing         :", self.name)
         try: 
+            
             self.state = Plug.get_plug2_state()
 
             # Turn Plug LEDs off at night time
