@@ -8,7 +8,7 @@ import asyncio
 from kasa import SmartPlug
 from time import sleep
 
-plug1_ip = '10.0.0.69'
+plug1_ip = '10.0.0.169'
 plug2_ip = '10.0.0.168'
 
 # private functions
