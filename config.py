@@ -23,7 +23,8 @@ class Config(object):
 
     # Data base Configurations, 
     # relative database needs /
-    database_loc = '/db_test.db'
+    #database_loc = '/db_test.db'
+    database_loc = '/home/mario/EnvironmentController/db_test.db'
 
     # Sensor Configurations
     sensor_cnt = 4

@@ -38,7 +38,7 @@ class Ds_Manager:
     def __init__(self, config=None):
         if config:
             database_temp = config.database_loc
-            database_loc = "sqlite://{}".format(database_temp)
+            database_loc = "sqlite:///{}".format(database_temp)
         else:
             print("Config Unavailable")
             database_loc = None
